@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<!-- <h1>
+					Dashboard <p><small>Control panel</small></p>
+				</h1> -->
+				<ol class="breadcrumb">
+					<li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i>
+							Home</a></li>
+					<li class="active">Nuevo Paquete</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+
+				<!-- AQUI VA EL CONTENIDO -->
+				<form class="form-horizontal" th:action="@{/paquete/add}" method="post"enctype="multipart/form-data">
+					<fieldset>
+						<legend class="center-block">
+							Nuevo Paquete <span style="font-size: small"> * es un campo obligatorio.</span>
+						</legend>
+						
+						<div th:if="${existe}">
+					  <div class="box-body">
+							 <div class="alert alert-warning alert-dismissible text-center">
+				                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				                <h4><i class="icon fa fa-warning"></i> Precauci&oacute;n!</h4>
+				                El campo "Paquete" ya existe!!!
+				             </div>
+						</div>
+					 </div>
+
+						<!-- PRODUCTO -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="nombrePaquete"> * Paquete</label>
+									<div class="form-group col-md-8">
+										<input type="text" name="nombrePaquete" maxlength="200"
+											class="form-control" id="nombrePaquete"
+											th:value="${paquete.nombrePaquete}" required="required"
+											placeholder="Escriba el nombre del paquete" /> <span
+											class="help-block">Nombre del paquete</span>
+									</div>
+							
+						</div>
+						<!-- Descripcion del paquete -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="notas">* Descripci&oacute;n</label>
+							<div class="col-md-8">
+								<textarea name="detallePaquete" rows="5" class="form-control"
+									maxlength="2000" id="detallePaquete" th:value="@{paquete.detallePaquete}"
+									placeholder="detallePaquete"> 								
+								</textarea>
+							 <span class="help-block">Descripci&oacute;n del paquete.</span>
+							</div>
+						</div>
+						
+				<!-- status del paquete -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="estado">Estado</label>
+							<div class="col-md-8">
+								<label><input value="1" type="radio" name="estado"
+									id="estado" checked="checked" /> Activo </label> <label> <input
+									th:value="0" type="radio" name="estado" /> Inactivo
+								</label> <span class="help-block">Estado del Paquete, activo o
+									Inactivo en el sistema. </span>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-md-2"></div>
+							<div class="col-md-8">
+								<button type="submit" class="btn btn-success">Guardar</button>
+								<a class="btn btn-danger" th:href="@{/paquete/listarPaquetes}">Cancelar</a>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+
+
+
+</body>
+</html>

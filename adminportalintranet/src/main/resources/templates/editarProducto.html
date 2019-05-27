@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<!-- <h1>
+					Dashboard <p><small>Control panel</small></p>
+				</h1> -->
+				<ol class="breadcrumb">
+					<li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i>
+							Home</a></li>
+					<li class="active">Nuevo Producto</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+
+				<!-- AQUI VA EL CONTENIDO -->
+				<form class="form-horizontal" th:action="@{/producto/editarProducto}" method="post"enctype="multipart/form-data">
+				   	<input hidden="hidden" name="id" th:value="${producto.id}" />
+				
+					<fieldset>
+						<legend class="center-block">
+							Nuevo Producto <span style="font-size: small"> * es un
+								campo obligatorio</span>
+						</legend>
+
+
+						<!-- PRODUCTO -->
+						<div class="form-group">
+							<!-- <label class="col-md-2 control-label" for="tipo_producto">* Tipo Contrato</label>-->
+								
+									<!-- 
+										<select name="tipo_contrato" class="form-control" field="${tiposContratos.idTipoContrato}" id="tipo_contrato">
+											<option value="0">Seleccione .... </option>
+    										   <option th:each="tipoContrato : ${tiposContratos}" th:value="${tipoContrato.idTipoContrato}" th:text="${tipoContrato.nombreTipoContrato}" th:selected="${producto.tipo_contrato}"></option>
+										</select> 
+									<span class="help-block">Renta o licencia</span>
+									</div>-->
+
+									<label class="col-md-2 control-label" for="nombre_producto"> *
+										Producto</label>
+									<div class="form-group col-md-8">
+										<input type="text" name="nombre_producto" maxlength="200"
+											class="form-control" id="producto"
+											th:value="${producto.nombre_producto}" required="required"
+											placeholder="Escriba el nombre del producto" /> <span
+											class="help-block">Nombre del producto</span>
+									</div>
+						</div>
+					
+					<!-- Tipo de producto, aplicacion o Servicio -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="tipoProducto">Tipo</label>
+							<div class="col-md-8">
+								<label><input value="1" type="radio" name="tipoProducto" id="tipoProducto" checked="checked" /> Software </label> 
+								 <label> <input th:value="0" type="radio" name="tipoProducto" /> Servicio
+								</label> <span class="help-block">Tipo de producto, aplicaci&oacute;n / Servicio profesional. </span>
+							</div>
+						</div>
+
+
+
+
+						<!-- Descripcion del producto -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="notas">* Descripci&oacute;n</label>
+							<div class="col-md-8">
+								<textarea name="descripcion" rows="5" class="form-control"
+									maxlength="2000" id="descripcion" th:value="@{producto.descripcion}" th:utext="${producto.descripcion}"
+									placeholder="descripcion"> 								
+								</textarea>
+								<span class="help-block">Descripci&oacute;n del producto
+									o servicio ofrecido.</span>
+							</div>
+						</div>
+
+						<!-- requerimientos de Hardware -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="req_hardware">Hardware</label>
+							<div class="col-md-8">
+								<textarea name="req_hardware" rows="5" class="form-control"
+									maxlength="2000" id="req_hardware" th:value="@{producto.req_hardware}" th:utext="${producto.req_hardware}"
+									placeholder="Requerimientos de Hardware"> 								
+								</textarea>
+								<span class="help-block">Descripci&oacute;n de los
+									requerimientos de hardware para operar el producto.</span>
+							</div>
+						</div>
+
+						<!-- requerimientos de Software -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="req_software">Software</label>
+							<div class="col-md-8">
+								<textarea name="req_software" rows="5" class="form-control"
+									maxlength="2000" id="req_hardware" th:value="@{producto.req_software}" th:utext="${producto.req_software}"
+									placeholder="Requerimientos de Software"> 								
+								</textarea>
+								<span class="help-block">Descripci&oacute;n de los
+									requerimientos de software para operar el producto.</span>
+							</div>
+						</div>
+						
+						<!-- requerimientos de Comunicaciones -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="reqComuincaciones">Comunicaciones</label>
+							<div class="col-md-8">
+								<textarea name="reqComunicaciones" rows="5" class="form-control"
+									maxlength="2000" id="reqComunicaciones" th:value="@{producto.reqComunicaciones}" th:utext="${producto.reqComunicaciones}"
+									placeholder="Requerimientos de Comunicaciones"> 								
+								</textarea>
+								<span class="help-block">Descripci&oacute;n de los
+									requerimientos de comunicaciones operar el producto.</span>
+							</div>
+						</div>
+						
+					<!--Nro de tickets por periodo  -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="nroTicketsPeriodo">*
+								Nro de tickets periodo</label>
+							<div class="col-md-4">
+								<input type="number" name="nroTicketsPeriodo" maxlength="3"
+									class="form-control" id="nroTicketsPeriodo"
+									th:value="${producto.nroTicketsPeriodo}" required="required"
+									placeholder="Nro de tickets de soporte T&eacute;cnico por periodo" /> <span
+									class="help-block">Escriba la cantidad m&aacute;xima de tickets por periodo para este producto</span>
+							</div>
+						</div>
+
+						<!-- Licencia desde  -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="licencia_desde">*
+								Vlr licencia desde</label>
+							<div class="col-md-8">
+								<input type="number" name="licencia_desde" maxlength="300"
+									class="form-control" id="licencia_desde"
+									th:value="${producto.licencia_desde}"									
+									 required="required"																										
+									placeholder="Valor de la licencia desde" /> <span
+									class="help-block">Escriba el valor de la licencia desde</span>
+							</div>
+						</div>
+
+						<!-- Mes desde -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="mes_desde">*
+								Vlr mes desde</label>
+							<div class="col-md-8">
+								<input type="number" name="mes_desde" maxlength="300"
+									class="form-control" id="mes_desde" th:value="${producto.mes_desde}"
+									required="required" placeholder="Mes desde " /> <span
+									class="help-block">Escriba el valor del mes desde</span>
+							</div>
+						</div>
+
+						<!-- Noche desde -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="noche_fact_desde">*
+								Vlr noche desde</label>
+							<div class="col-md-8">
+								<input type="number" name="noche_fact_desde" maxlength="300"
+									class="form-control" id="noche_fact_desde"
+									th:value="${producto.noche_fact_desde}" required="required"
+									placeholder="Noche desde " /> <span class="help-block">Escriba
+									el valor de la noche desde. </span>
+							</div>
+						</div>
+						
+				<!-- status del producto -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="status">Status</label>
+							<div class="col-md-8">
+								<label><input value="1" type="radio" name="estado"
+									id="estado" checked="checked" /> Activo </label> <label> <input
+									th:value="0" type="radio" name="estado" /> Inactivo
+								</label> <span class="help-block">Estado del Producto, activo o
+									Inactivo en el sistema. </span>
+							</div>
+						</div>
+
+						<!-- upload imagen establecimiento -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="doc_anexo">Anexos.
+							</label>
+							<div></div>
+							<div class="col-md-8">
+								<input id="doc_anexo" type="file" name="doc_anexo" value="" />
+								<span class="help-block">Anexe documentos relevantes y
+									asociados al producto. </span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-2"></div>
+							<div class="col-md-8">
+								<button type="submit" class="btn btn-success">Guardar</button>
+								<a class="btn btn-danger" th:href="@{/producto/listarProductos}">Cancelar</a>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+
+
+
+</body>
+</html>

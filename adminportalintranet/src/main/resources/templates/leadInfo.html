@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					<p>
+						<a th:href="@{/lead/EditarLead(id=${lead.id})}"
+							class="btn btn-success"></i> Editar </a> <a class="btn btn-danger"
+							th:href="@{/lead/listarLeads}">Regresar</a>
+						<div class="box-body" th:if="${Editado}">
+							<div class="alert alert-success alert-dismissible text-center">
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">&times;</button>
+								<h4>
+									<i class="icon fa fa-check"></i>LEAD MODIFICADO.
+								</h4>
+	
+							</div>
+						</div>
+					</p>
+
+					<!-- Detalle del LEAD ......  -->
+
+				</h1>
+				<ol class="breadcrumb">
+					<li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i>
+							Home</a></li>
+					<li class="active"><a th:href="@{/lead/listarLeads}"><i
+							lass="fa fa-long-arrow-left" aria-hidden="true">Regresar</a></li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<div class="container">
+				<div class="col-md-12">
+					<!-- Box Comment -->
+					<div class="box box-widget">
+						<div class="box-header with-border">
+							<div class="user-block">
+								<div class="row">
+									<div class="col-xs-6">
+										<img class="img-circle" src="../dist/img/user1-128x128.jpg"
+											alt="User Image" /> <span class="username"> <span
+											th:text="${lead.empresa}"></span>
+										</span> <span class="description"><span
+											th:text="${tipoEmpresa.nombreTipoEmpresa}"> </span>
+											<p>
+												Creada el: <span th:text="${lead.fechaCreacion}"></span>
+											</p> </span>
+									</div>
+									<div class="col-xs-6">
+										<span th:text="${lead.countryName}"></span>
+										<p>
+											<span th:text="${lead.stateName}" /> <label> / </label> <span th:text="${lead.cityName}" />
+										</p>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.user-block -->
+							<div class="box-tools">
+								<button type="button" class="btn btn-box-tool"
+									data-toggle="tooltip" title="Mark as read">
+									<i class="fa fa-circle-o"></i>
+								</button>
+								<button type="button" class="btn btn-box-tool"
+									data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+								<!-- <button type="button" class="btn btn-box-tool"
+									data-widget="remove">
+									<i class="fa fa-times"></i>
+								</button>-->
+							</div>
+							<!-- /.box-tools -->
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<!-- post text -->
+							<div class="row">
+								<div class="col-xs-6">
+									<!--<p><strong>Empresa: </strong><span th:text="${lead.empresa}"></span></p>  -->
+									<p>
+										<label class="col-md-3 control-label" for="publisher">
+											Direcci&oacute;n: </label><span th:text="${lead.direccion}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="publisher">C&oacute;digo
+											Postal: </label><span th:text="${lead.codigoPostal}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="publisher">Web:
+										</label>
+										<div th:switch="${lead.webpage}">
+											  <p th:case="''">---</p>
+											  <p th:case="*"><span th:text="${lead.webpage}"></span></p>
+										</div>											
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="publisher">Tel&eacute;fono1: 											
+											<div th:switch="${lead.telefono1}">
+											  <p th:case="''">---</p>
+											  <p th:case="*"></label><span th:text="${lead.telefono1}"></span></p>
+										    </div>											
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="telefono2">Tel&eacute;fono
+											2: </label><span th:text="${lead.telefono2}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="telefono3">Tel&eacute;fono
+											3: </label><span th:text="${lead.telefono3}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="zona">Zona:
+										</label><span th:text="${zonaComercial.nombreZona}"></span>
+									</p>
+
+									<p>
+										<label class="col-md-3 control-label" for="Contribuyente">Contribuyente:
+										</label><span th:text="${lead.tipoContribuyente}"></span>
+									</p>
+
+								</div>
+								<div class="col-xs-6">
+									<p>
+										<label class="col-md-3 control-label" for="rut">RUT / NIT: </label>
+											<div th:switch="${lead.rut}">
+											  <p th:case="''">---</p>
+											  <p th:case="*"><span th:text="${lead.rut}"></span></p>
+										    </div>	
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="contactoppal">Contacto
+											Ppal: </label><span th:text="${lead.contactoPpal}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="emailppal">Email
+											gerente: </label><span th:text="${lead.emailGerente}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="publisher">Tel
+											personal: </label><span th:text="${lead.telGerente}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="OtroContacto">Otro contacto: </label>											
+											<div th:switch="${lead.Otrocontacto}">
+											  <p th:case="''">---</p>
+											  <p th:case="*"><span th:text="${lead.Otrocontacto}"></span></p>
+										    </div>	
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="emailOtro">Email
+											contacto: </label>
+											<div th:switch="${lead.emailotro}">
+											  <p th:case="''">---</p>
+											  <p th:case="*"></label><span th:text="${lead.emailotro}"></span></p>
+										    </div>												
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="telotro">Tel otro : </label>
+											<div th:switch="${lead.telOtro}">
+											  <p th:case="''">---</p>
+											  <p th:case="*"></label><span th:text="${lead.telOtro}"></span></p>
+										    </div>	
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="estadoLead">Estado:
+										</label>
+										<div th:switch="${lead.estado}">
+											  <p th:case="'1'">Activo</p>
+											  <p th:case="0">Inactivo</p>
+										 </div>	
+										
+									</p>
+								</div>
+							</div>
+							<!-- Notas -->
+							<div class="attachment-block clearfix">
+								<div class="col-xs-12">
+									<h4 class="attachment-heading">
+										<p></p>
+										<strong>NOTAS: </strong>
+									</h4>
+
+									<div class="attachment-text">
+									<p></p>
+										<span th:utext="${lead.notas}"></span>
+									</div>
+									<!-- /.attachment-text -->
+								</div>
+								<!-- /.attachment-pushed -->
+							</div>
+
+
+							<!-- /.attachment-block -->
+
+							<!-- Social sharing buttons -->
+							<!-- 
+							<button type="button" class="btn btn-default btn-xs">
+								<i class="fa fa-share"></i> Share
+							</button>
+							<button type="button" class="btn btn-default btn-xs">
+								<i class="fa fa-thumbs-o-up"></i> Like
+							</button>
+							<span class="pull-right text-muted">45 likes - 2 comments</span> 
+							-->
+						</div>
+						<!-- /.box-body -->
+
+
+						<!-- /.box-footer -->
+					</div>
+					<!-- /.box -->
+					
+					<a th:href="@{/cliente/CrearCliente(id=${lead.id})}" class="btn btn-block btn-info btn-lg"> Crear Cliente </a>
+					  
+				</div>
+				<!-- /.col -->
+
+			</div>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+
+
+</body>
+</html>

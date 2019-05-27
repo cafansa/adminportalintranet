@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+		
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<!-- <h1>
+					Dashboard <p><small>Control panel</small></p>
+				</h1>-->
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li class="active">Dashboard</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+			
+			<!-- AQUI VA EL CONTENIDO -->
+			<form class="form-horizontal" th:action="@{/lead/add}" method="post"
+				enctype="multipart/form-data">
+				<fieldset>
+					<legend class="center-block">
+						Nuevo LEAD <span style="font-size: small"> * es un campo obligatorio</span>
+					</legend>
+					
+					
+					<!-- LOCALIZACION -->
+						<div class="form-group">
+							<label class = "col-md-2 control-label">* Localizaci&oacute;n</label>
+							<div class="col-md-8">
+							<div class="row">
+								<div class="col-xs-4">
+									<!-- <input type="text" name = "country" class="form-control" id = "country" value = "" required="required" placeholder="Pa&iacute;s" />-->
+									<select name="countriess" class="form-control" id="countriess">
+											<option value="0">Seleccione .... </option>
+    										   <option th:each="countries : ${countriess}" th:value="${countries.id}" th:text="${countries.name}"></option>
+										</select> 
+								</div>
+								<div class="col-xs-4">
+									<!--<input type="text" name = "state" class="form-control" id = "state" value = "" required="required" placeholder="Estado / Dpto" />  -->
+									<select name="states" class="form-control" id="states">
+									    <option value="0">-- </option>									    
+									</select>
+								</div>
+								<div class="col-xs-4">
+									<!--<input type="text" name = "city" class="form-control" id = "city" value = "" required="required" placeholder="Ciudad" /> -->
+									<select name="cities" class="form-control" id="cities">
+										    <option value="0">-- </option>
+										    <!-- <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option> -->									    
+										</select> 	
+								</div>														
+							</div>
+							<span class="help-block">Seleccione la localizaci&oacute;n del LEAD</span>
+							</div>
+						</div>
+
+
+						<!-- Compañia / Empresa -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="empresa">* Empresa</label>
+
+						<div class="col-md-8">
+							<input type="text" name="empresa" maxlength="200" class="form-control" id="empresa"
+								th:value="${lead.empresa}" required="required" placeholder="Compa&ntilde;ia" />
+							<span class="help-block">Nombre de la compa&ntilde;ia  o empresa</span>
+						</div>
+					</div>
+
+						<!-- Direccion -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="publisher">* Direcci&oacute;n</label>
+							<div class="col-md-8">
+								<input type="text" name="direccion" maxlength="300" class="form-control"
+									id="direccion" th:value="${lead.direccion}" required="required" placeholder="Direcci&oacute;n" /> <span
+									class="help-block">Direcc&oacute;n de la empresa o
+									compa&ntilde;ia</span>
+							</div>
+						</div>
+						
+						<!-- webPage -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="webpage"> P&aacute;gina Web</label>
+							<div class="col-md-8">
+								<input type="text" name="webpage" maxlength="100" class="form-control"
+									id="webpage" th:value="${lead.webpage}" placeholder="http://wwww.empresa.com" /> <span
+									class="help-block">P&aacute;gina web de la empresa</span>
+							</div>
+						</div>
+
+						<!-- telefonos -->
+						<div class="form-group">
+							<label class="col-md-2 control-label">T&eacute;lefonos</label>
+							<div class="col-md-8">
+								<div class="row">
+									<div class="col-xs-4">
+										<input type="text" maxlength="12" name="telefono1" class="form-control numero" 	
+											id="telefono1" th:value="${lead.telefono1}" required="required"
+											placeholder="T&eacute;lefono 1" />
+									</div>
+									<div class="col-xs-4">
+										<input type="text" maxlength="12" name="telefono2" class="form-control numero"
+											id="telefono2" th:value="${lead.telefono2}" 
+											placeholder="T&eacute;lefono 2" />
+									</div>
+									<div class="col-xs-4">
+										<input type="text" maxlength="12" name="telefono3" class="form-control numero" id="telefono3"
+											th:value="${lead.telefono3}"placeholder="T&eacute;lefono 3" />
+									</div>
+								</div>
+								<span class="help-block">Ingrese telefonos fijos o celulares SIN C&oacute;digo de &Aacute;rea</span>
+							</div>
+						</div>
+
+
+						<!-- Codigo postal  y zona comercial-->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="cp">
+								C&oacute;digo Postal</label>
+							<div class="col-md-8">
+								<div class="row">
+									<div class="col-md-5">
+										<input type="text" maxlength="12" name="codigoPostal" class="form-control numero"
+											id="codigoPostal" th:value="${lead.codigoPostal}" 
+											placeholder="C&oacute;digo Postal" />
+									</div>
+							
+							<label class="col-md-2 control-label" for="zona">
+								* Zona</label>
+									<div class="form-group col-md-5">										
+										<select name="zona" class="form-control" id="zona">
+											<option value="0">Seleccione .... </option>
+    										   <option th:each="zonaComercial : ${zonasComerciales}" th:value="${zonaComercial.idZonaComercial}" th:text="${zonaComercial.nombreZona}"></option>
+										</select> 
+									</div>
+								</div>
+								<span class="help-block">C&oacute;digo postal y zona comercial de la empresa</span>
+							</div>
+						</div>
+						
+						<!-- Tipo de establecimiento y regimen tributario-->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="cp">* Tipo Empresa</label>
+							<div class="col-md-8">
+								<div class="row">
+									<div class="col-md-4">
+										<select name="tipoEmpresa" class="form-control" id="tipoEmpresa">
+											<option value="0">Seleccione .... </option>
+    										   <option th:each="tipoEmpresa : ${tiposEmpresas}" th:value="${tipoEmpresa.idTipoEmpresa}" th:text="${tipoEmpresa.nombreTipoEmpresa}"></option>
+										</select> 
+									</div>
+							
+							<label class="col-md-3 control-label" for="tcontribuyente">
+								* Contribuyente</label>
+									<div class="form-group col-md-5">										
+										<select th:value="${lead.tipoContribuyente}" id="tipoContribuyente" name="tipoContribuyente" class="form-control" required="required">
+											<option value="" selected="selected" diasbled="diasbled">Seleccione...</option>
+											<option value="informal" th:selected="(${lead.tipoContribuyente}=='Restaurante')">Informal</option>
+											<option value="No responsable de IVA" th:selected="(${lead.tipoContribuyente}=='No responsable de IVA')">No responsable de IVA</option>
+											<option value="Responsable de IVA" th:selected="(${lead.tipoContribuyente}=='Responsable de IVA')">Responsable de IVA</option>										
+										</select>
+									</div>
+								</div>
+								<span class="help-block">Datos del establecimiento o empresa</span>
+							</div>
+						</div>
+
+
+						<!-- RUT de la empresa -->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="rutNit">
+								RUT / NIT</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" id="rut" maxlength="30"
+									name="rut" th:value="${lead.rut}" 
+									placeholder="Digite el RUT o NIT de la empresa sin di&iacute;gito de verificaci&oacute;n" /> <span
+									class="help-block">RUT o NIT de la empresa</span>
+							</div>
+						</div>
+
+						<!-- Gerente o Propietario -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="gerente">* Contacto Principal</label>
+						<div class="col-md-8">
+							<input type="text" class="form-control" id="contactoPpal" maxlength="200"
+								name="contactoPpal" th:value="${lead.contactoPpal}" required = "required"
+								placeholder="Nombre del Gerente y/o propietario" /> 
+								<span class="help-block">Nombre del gerente o encargado con poder de desici&oacute;n</span>
+						</div>
+					</div>
+
+						<!-- Email y telefono personal del gerente-->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="email_gerente">*
+								Email del gerente</label>
+							<div class="col-md-8">
+								<div class="row">
+									<div class="col-md-5">
+										<input type="email" name="emailGerente" class="form-control"
+											id="emailGerente" th:value="${lead.emailGerente}" placeholder="gerente@empresa.com" required="required"/>
+									</div>
+									<label class="col-md-3 control-label" for="telGerente"> *
+										T&eacute;lefono personal</label>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="text" name="telGerente" maxlength="12" class="form-control numero" required="required"
+												id="telGerente" th:value="${lead.telGerente}" placeholder="555 5555 5555" />
+										</div>
+									</div>
+								</div>
+								<span class="help-block">Email y t&eacute;lefono personal
+									del gerente o propietario.</span>
+							</div>
+						</div>
+						
+						<!-- Otro Contacto -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="gerente">Otro Contacto</label>
+						<div class="col-md-8">
+							<input type="text" class="form-control" id="Otrocontacto" maxlength="200"
+								name="Otrocontacto" th:value="${lead.Otrocontacto}" 
+								placeholder="Nombre del segundo contacto" /> 
+								<span class="help-block">Nombre del contacto alterno</span>
+						</div>
+					</div>
+
+						<!-- Email y telefono contacto alterno-->
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="email_otro">Email contacto alterno</label>
+							<div class="col-md-8">
+								<div class="row">
+									<div class="col-md-5">
+										<input type="email" name="emailotro" class="form-control"
+											id="emailotro" th:value="${lead.emailotro}" placeholder="otro@empresa.com" />
+									</div>
+									<label class="col-md-3 control-label" for="emailotro">
+										T&eacute;lefono contacto alterno</label>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="text" name="telOtro" maxlength="12" class="form-control numero"
+												id="telOtro" th:value="${lead.telOtro}" placeholder="888 5555 8888" />
+										</div>
+									</div>
+								</div>
+								<span class="help-block">Email y t&eacute;lefono personal
+									de contacto alterno.</span>
+							</div>
+						</div>
+
+
+						<!-- Fecha creacion -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="fecha_creacion">* Fecha de creaci&oacute;n</label>
+						<div class="col-md-3">
+							<input type="date" name="fechaCreacion" class="form-control" id="fechaCreacion"
+								th:value="${lead.fechaCreacion}" placeholder="di&iacute;a/mes/dia" required="required"/> <span
+								class="help-block">Fecha de creaci&oacute;n</span>
+						</div>
+					</div>
+
+					
+
+					<!-- status del LEAD -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="status">Status</label>
+						<div class="col-md-8">
+							<label><input value="1" type="radio" name="estado" id="estado"
+								checked="checked" /> Activo </label> <label>
+								<input th:value="0" type="radio" name="estado" />
+								Inactivo </label> <span class="help-block">Estado del LEAD, activo o Inactivo en el sistema. </span>
+						</div>
+					</div>
+
+					<!-- Notas Adicionales -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="notas">Notas</label>
+						<div class="col-md-8">
+							<textarea name="notas" rows="5" class="form-control" maxlength="2000"
+								id="notas" th:value="@{lead.notas}"
+								placeholder="Description"> 								
+								</textarea>
+							<span class="help-block">Notas adicionales respecto a la creaci&oacute;n del LEAD</span>
+						</div>
+					</div>
+
+					<!-- upload imagen establecimiento -->
+					<div class="form-group">
+						<div class="col-md-2">
+							<label for="img_empresa">Adjunte imagen de la empresa. </label>
+						</div>
+						<div class="col-md-8">
+							<input id="img_empresa" type="file" name="img_empresa"
+								value="" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<button type="submit" class="btn btn-success">Guardar</button>
+							<a class="btn btn-danger" th:href="@{/admin}">Cancelar</a>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			
+			
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+		
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+	
+	<div th:replace="common/plantilla :: plugins"></div>
+	
+	<!-- SCRIPT PARA RECARGA DE MENUS ESTADO DPTO -->
+		<script type="text/javascript">
+		
+		//LLAMADO DE DEPTOS O ESTADOS
+		$(document).ready(function() {
+		    $("#countriess").change(function() {
+		        sendAjaxRequest();
+		    });
+		});
+		
+		function sendAjaxRequest() {
+		    var country_id = $("#countriess").val();
+		    $.get( "/lead/getCountryStateValues?country_id=" + country_id, function( data ) {
+		    	console.log(data);
+		        $("#states").empty();
+			        var option = "<option value = '0'>Seleccione ....</option>";
+					$("#states").append(option);
+		        data.forEach(function(item, i) {
+		           	var option = "<option value = " + item.id + ">" + item.name +  "</option>";		          
+		            $("#states").append(option);
+		        });
+		    });
+		};
+		
+		//LLAMADO DE CIUDADES ASOCIADAS A UN DPTO O ESTADO
+		$(document).ready(function() {
+		    $("#states").change(function() {
+		    	sendAjaxRequestCities();
+		    });
+		});
+		
+		function sendAjaxRequestCities() {
+		    var state_id = $("#states").val();
+		    $.get( "/lead/getStateCityValues?state_id=" + state_id, function( data ) {
+		    	console.log(data);
+		        $("#cities").empty();
+		        var option = "<option value = '0'>Seleccione ....</option>";
+				$("#cities").append(option);
+		        data.forEach(function(item, i) {
+		            var option = "<option value = " + item.id + ">" + item.name +  "</option>";
+		            $("#cities").append(option);
+		        });
+		    });
+		};
+		
+		</script>
+	
+</body>
+</html>

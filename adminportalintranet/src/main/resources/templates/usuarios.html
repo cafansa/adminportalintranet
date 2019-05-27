@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Dashboard
+					<p>
+						<small>Control panel</small>
+					</p>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li class="active">Listar usuarios</li>
+				</ol>
+			</section>
+			<span style="color:green;" th:if="${emailSent}">Correo enviado satisfactoriamente!!</span> 
+			<!-- Main content -->
+			<section class="content">
+				<!-- Aqui va el contenido que se carga de todas las vistas -->
+				<div class="box">
+					<div class="box-header">
+						<h1>Usuarios</h1>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Nombre</th>
+									<th>Apellido</th>
+									<th>Email</th>
+									<th>Username</th>
+									<th>Estado</th>
+									<th>Editar</th>
+									<th>Activar/Desactivar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-th-each="user: ${userList}">
+									<td th:text="${user.id}"></td>
+									<td th:text="${user.firstName}"></td>
+									<td th:text="${user.lastName}"></td>
+									<td th:text="${user.email}"></td>
+									<td th:text="${user.username}"></td>
+									<div th:if="${user.enabled}">
+										<td th:text="Activo"></td>
+									</div>
+									<div th:unless="${user.enabled}">
+										<td th:text="Inactivo"></td>
+									</div>
+									<td>
+										<!-- <input hidden="hidden" name="id" th:value="${role.roleId}" /> -->
+										<a th:id="'edit-'+${user.id}" class="btn btn-primary" th:href="@{/user/updateUsuario?id=}+${user.id}">
+										<span class="fa fa-pencil"></span> Editar</a>
+									</td>
+									<div th:if="${user.enabled}">
+										<td><a th:id="'desactivar-'+${user.id}" class="btn btn-danger" th:href="@{/user/desactivarUsuario?id=}+${user.id}">
+											<span class="fa fa-close"></span> Desactivar</a>
+										</td>
+									</div>
+									<div th:unless="${user.enabled}">
+										<td><a th:id="'activar-'+${user.id}" class="btn btn-success" th:href="@{/user/activarUsuario?id=}+${user.id}">
+											<span class="fa fa-check"></span> Activar</a>
+										</td>
+									</div>
+								</tr>
+							</tbody>
+							<!--  <tfoot>
+								<tr>
+									<th>Id</th>
+									<th>Nombre</th>
+									<!--  <th>Operation</th>
+								</tr>
+							</tfoot>-->
+						</table>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+
+	<script>
+		$(function() {
+			$('#example1').DataTable()
+			/*$('#example2').DataTable({
+				'paging' : true,
+				'lengthChange' : false,
+				'searching' : false,
+				'ordering' : true,
+				'info' : true,
+				'autoWidth' : false
+			})*/
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					<p>
+						<a th:href="@{/tipoContrato/editarTipoContrato(idTipoContrato=${tipoContrato.idTipoContrato})}"
+							class="btn btn-success"></i> Editar </a> <a class="btn btn-danger"
+							th:href="@{/tipoContrato/listarTipoContrato}">Regresar</a>
+						<div class="box-body" th:if="${Editado}">
+							<div class="alert alert-success alert-dismissible text-center">
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">&times;</button>
+								<h4>
+									<i class="icon fa fa-check"></i>TIPO CONTRATO MODIFICADO.
+								</h4>
+	
+							</div>
+						</div>
+					</p>
+
+				</h1>
+				<ol class="breadcrumb">
+					<li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i>
+							Home</a></li>
+					<li class="active"><a th:href="@{/tipoContrato/listarTipoContrato}"><i
+							lass="fa fa-long-arrow-left" aria-hidden="true">Regresar</a></li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<div class="container">
+				<div class="col-md-12">
+					<!-- Box Comment -->
+					<div class="box box-widget">
+						<div class="box-header with-border">
+						
+							<!-- /.user-block -->
+							<div class="box-tools">
+								<button type="button" class="btn btn-box-tool"
+									data-toggle="tooltip" title="Mark as read">
+									<i class="fa fa-circle-o"></i>
+								</button>
+								<button type="button" class="btn btn-box-tool"
+									data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+								<!-- <button type="button" class="btn btn-box-tool"
+									data-widget="remove">
+									<i class="fa fa-times"></i>
+								</button>-->
+							</div>
+							<!-- /.box-tools -->
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<!-- post text -->
+							<div class="row">
+								<div class="col-xs-6">
+									<!--<p><strong>Empresa: </strong><span th:text="${lead.empresa}"></span></p>  -->
+									<p>
+										<label class="col-md-3 control-label" for="nombreTipoContrato">
+											Nombre</label><span th:text="${tipoContrato.nombreTipoContrato}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="estado">Estado
+										  </label>										  
+										  <span>										  
+											   <div th:switch="${tipoContrato.estado}">
+												  <p th:case="'1'">Activo</p>
+												  <p th:case="0">Inactivo</p>																					  
+											  </div>
+										  </span>
+									</p>									
+								</div>
+								<div class="col-xs-6">
+									<p>
+										<label class="col-md-3 control-label" for="creadoPorTipoContrato">Creada por											
+											</label>
+											<div th:switch="${tipoContrato.creadoPorTipoContrato}">
+											  <p th:case="''">---</p>
+											  <p th:case="null">---</p>
+											  <p th:case="*"><span th:text="${tipoContrato.creadoPorTipoContrato}"></span></p>
+										    </div>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="fechaCreacionTipoContrato">Fecha Creaci&oacute;n 
+									</label>
+											<div th:switch="${tipoContrato.fechaCreacionTipoContrato}">
+											  <p th:case="''">---</p>
+											  <p th:case="*"><span th:text="${tipoContrato.fechaCreacionTipoContrato}"></span></p>
+										    </div>									
+									</p>									
+								</div>
+							</div>
+							<!-- Notas -->
+							<div class="attachment-block clearfix">
+								<div class="col-xs-12">
+									<h4 class="attachment-heading">
+										<p></p>
+										<strong>Descripci&oacute;n: </strong>
+									</h4>
+
+									<div class="attachment-text">
+									<p></p>
+										<span th:utext="${tipoContrato.decripcionTipoContrato}"></span>
+									</div>
+									<!-- /.attachment-text -->
+								</div>
+								<!-- /.attachment-pushed -->
+							</div>
+
+
+							<!-- /.attachment-block -->
+
+							<!-- Social sharing buttons -->
+							<!-- 
+							<button type="button" class="btn btn-default btn-xs">
+								<i class="fa fa-share"></i> Share
+							</button>
+							<button type="button" class="btn btn-default btn-xs">
+								<i class="fa fa-thumbs-o-up"></i> Like
+							</button>
+							<span class="pull-right text-muted">45 likes - 2 comments</span> 
+							-->
+						</div>
+						<!-- /.box-body -->
+
+
+						<!-- /.box-footer -->
+					</div>
+					<!-- /.box -->
+					
+					
+					  
+				</div>
+				<!-- /.col -->
+
+			</div>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+
+
+</body>
+</html>

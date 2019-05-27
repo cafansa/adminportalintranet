@@ -1,0 +1,68 @@
+				<!-- Productos Añadidos al paqueteProducto -->			
+						 <div class="form-group" id="paquetesProductosAgregados">
+						   <label class="col-md-1 control-label" for="Tabla"></label>
+							 <div class="attachment-block clearfix col-md-10">
+								<div class="col-xs-12">
+									<h4 class="attachment-heading">
+										<p></p>
+										<strong>Productos agregados: </strong>
+									</h4>
+
+									<div class="attachment-text">		
+					<div class="box-body">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<!-- <th>Id</th>-->									
+									<th>Consultar</th>
+									<th>Empresa</th>																		
+									<th>Tipo</th>
+									<th>Pa&iacute;s</th>
+									<th>Dpto</th>
+									<th>Ciudad</th>																		
+									<th>Creado el</th>						
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-th-each="lead : ${leads}">									 							
+							   <!-- <td><a th:href="@{/lead/leadInfo(id=${lead.id})}" ><span th:text="${lead.empresa}" ></a></td> -->
+							        <td><a th:href="@{/lead/leadInfo(id=${lead.id})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Consultar</a></td>
+							        <td th:text="${lead.empresa}"></td>							        									
+									<td th:text="${lead.NombreTipoEmpresa}"></td>
+									<td th:text="${lead.countryName}"></td>									
+									<td th:text="${lead.stateName}"></td>
+									<td th:text="${lead.cityName}"></td>
+									<td th:text="${lead.fechaCreacion}"></td>									
+									<!-- <td>
+										<input hidden="hidden" name="id" th:value="${book.id}" />
+										<button th:id="'oneBook-'+${book.id}" class="btn btn-danger btn-xs delete-book" type="submit" value="delete" >
+										<span class="fa fa-times"></span>Delete</button>
+									</td> -->
+								</tr>
+							</tbody>
+							
+						</table>
+					</div>
+					<!-- /.box-body -->
+				</div>
+			<!-- /.attachment-text -->
+		</div>
+		<!-- /.attachment-pushed -->
+	 </div>
+</div>
+<!-- Fin de la tabla -->
+				
+
+	<script>
+		$(function() {
+			$('#example1').DataTable()
+			/*$('#example2').DataTable({
+				'paging' : true,
+				'lengthChange' : false,
+				'searching' : false,
+				'ordering' : true,
+				'info' : true,
+				'autoWidth' : false
+			})*/
+		})
+	</script>

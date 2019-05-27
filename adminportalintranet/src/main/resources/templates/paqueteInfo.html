@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					<p>
+						<a th:href="@{/paquete/editarPaquete(idPaquete=${paquete.idPaquete})}"
+							class="btn btn-success"></i> Editar </a> <a class="btn btn-danger"
+							th:href="@{/paquete/listarPaquetes}">Regresar</a>
+						<div class="box-body" th:if="${Editado}">
+							<div class="alert alert-success alert-dismissible text-center">
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">&times;</button>
+								<h4>
+									<i class="icon fa fa-check"></i>PAQUETE MODIFICADO.
+								</h4>
+	
+							</div>
+						</div>
+					</p>
+
+				</h1>
+				<ol class="breadcrumb">
+					<li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i>
+							Home</a></li>
+					<li class="active"><a th:href="@{/paquete/listarPaquetes}"><i
+							lass="fa fa-long-arrow-left" aria-hidden="true">Regresar</a></li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<div class="container">
+				<div class="col-md-12">
+					<!-- Box Comment -->
+					<div class="box box-widget">
+						<div class="box-header with-border">
+							<!-- 
+							<div class="user-block">
+								<div class="row">
+									<div class="col-xs-6">
+										 
+										<img class="img-circle" src="../dist/img/user1-128x128.jpg"
+											alt="User Image" /> 
+											
+											<span class="username"> <span
+											th:text="${lead.empresa}"></span>
+										</span> <span class="description"><span
+											th:text="${lead.tipoEmpresa}"> </span>
+											<p>
+												Creada el: <span th:text="${lead.fechaCreacion}"></span>
+											</p> </span>
+									</div>
+									<div class="col-xs-6">
+										<span th:text="${lead.countryName}"></span>
+										<p>
+											<span th:text="${lead.stateName}" /> <label> / </label> <span
+												th:text="${lead.cityName}" />
+										</p>
+									</div>
+								</div>
+
+							</div>-->
+							<!-- /.user-block -->
+							<div class="box-tools">
+								<button type="button" class="btn btn-box-tool"
+									data-toggle="tooltip" title="Mark as read">
+									<i class="fa fa-circle-o"></i>
+								</button>
+								<button type="button" class="btn btn-box-tool"
+									data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+								<!-- <button type="button" class="btn btn-box-tool"
+									data-widget="remove">
+									<i class="fa fa-times"></i>
+								</button>-->
+							</div>
+							<!-- /.box-tools -->
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<!-- post text -->
+							<div class="row">
+								<div class="col-xs-6">
+									<!--<p><strong>Empresa: </strong><span th:text="${lead.empresa}"></span></p>  -->
+									<p>
+										<label class="col-md-3 control-label" for="nombreZona">
+											Paquete: </label><span th:text="${paquete.nombrePaquete}"></span>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="Estado">Estado
+										  </label>										  
+										  <span>										  
+											   <div th:switch="${paquete.estado}">
+												  <p th:case="'1'">Activo</p>
+												  <p th:case="0">Inactivo</p>																					  
+											  </div>
+										  </span>
+									</p>									
+								</div>
+								<div class="col-xs-6">
+									<p>
+										<label class="col-md-3 control-label" for="paqueteCreadoPor">Creada por
+											</label>
+											
+											<div th:switch="${paquete.paqueteCreadoPor}">
+											  <p th:case="''">---</p>
+											  <p th:case="null">---</p>
+											  <p th:case="*"><span th:text="${paquete.paqueteCreadoPor}"></span></p>
+										    </div>
+									</p>
+									<p>
+										<label class="col-md-3 control-label" for="fechaCreacionPaquete">Fecha Creaci&oacute;n 
+									</label>
+										<div th:switch="${paquete.fechaCreacionPaquete}">
+											  <p th:case="''">---</p>
+											  <p th:case="null">---</p>
+											  <p th:case="*"><span th:text="${paquete.fechaCreacionPaquete}"></span></p>
+										    </div>																	
+									</p>									
+								</div>
+							</div>
+							<!-- Notas -->
+							<div class="attachment-block clearfix">
+								<div class="col-xs-12">
+									<h4 class="attachment-heading">
+										<p></p>
+										<strong>Descripci&oacute;n: </strong>
+									</h4>
+
+									<div class="attachment-text">
+									<p></p>
+										<span th:utext="${paquete.detallePaquete}"></span>
+									</div>
+									<!-- /.attachment-text -->
+								</div>
+								<!-- /.attachment-pushed -->
+							</div>
+
+
+							<!-- /.attachment-block -->
+
+							<!-- Social sharing buttons -->
+							<!-- 
+							<button type="button" class="btn btn-default btn-xs">
+								<i class="fa fa-share"></i> Share
+							</button>
+							<button type="button" class="btn btn-default btn-xs">
+								<i class="fa fa-thumbs-o-up"></i> Like
+							</button>
+							<span class="pull-right text-muted">45 likes - 2 comments</span> 
+							-->
+						</div>
+						<!-- /.box-body -->
+
+
+						<!-- /.box-footer -->
+					</div>
+					<!-- /.box -->
+					
+					
+					  
+				</div>
+				<!-- /.col -->
+
+			</div>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+
+
+</body>
+</html>

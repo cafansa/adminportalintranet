@@ -1,0 +1,49 @@
+<!-- Productos Añadidos al Cliente Lead -->			
+						 <div class="form-group" id="paquetesProductosAgregadosCliente">
+						   <label class="col-md-1 control-label" for="Tabla"></label>
+							 <div class="attachment-block clearfix col-md-10">
+								<div class="col-xs-12">
+									<h4 class="attachment-heading">
+										<p></p>
+										<strong>Items agregados: </strong>
+									</h4>
+
+									<div class="attachment-text">										
+										 <div class="box-body">
+											<table id="example1" class="table table-bordered table-striped">
+												<thead>
+													<tr>
+														<th>Item</th>
+														<th>Tipo</th>																		
+														<th>Valor</th>
+														<th>Agreado el</th>
+														<th>Acci&oacute;n</th>
+														<th>Eliminar</th>																																	
+													</tr>
+												</thead>
+												<tbody>
+													  <tr data-th-each="paqueteProducto : ${paquetesProductos}">
+												        <td th:text="${paqueteProducto.nombrePaqueteComercial}"></td>
+												        <td th:text="${paqueteProducto.nombrePaqueteComercial}"></td>
+												        <td th:text="${paqueteProducto.nombrePaqueteComercial}"></td>
+												        <td th:text="${paqueteProducto.fechaCreacionCliente}"></td>												        												        												        
+												        <td><a href="@{/paqueteProducto/deleteProduct/{idPaqueteProducto} (idPaqueteProducto=${paqueteProducto.idPaqueteProducto})}" class="btn btn-primary btn-danger btn-sm"><span class="fa fa-info-circle"> </span> Eliminar</a></td>												        																																												        
+												        <td><a href="@{/producto/productoInfoPp/{id}/{idPaqueteProducto} (id=${paqueteProducto.idProducto}, idPaqueteProducto=${paqueteProducto.idPaqueteProducto})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Consultar</a></td>
+													</tr>
+												</tbody>												
+											</table>
+										</div>
+									</div>
+									<!-- /.attachment-text -->
+								</div>
+								<!-- /.attachment-pushed -->
+							</div>
+						</div>
+						<!-- Fin de la tabla -->
+				
+<!-- DataTable-->
+	<script>
+		$(function() {
+			$('#example1').DataTable()			
+		})
+	</script>

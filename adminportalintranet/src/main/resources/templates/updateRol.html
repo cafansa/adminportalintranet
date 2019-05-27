@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Dashboard
+					<p>
+						<small>Control panel</small>
+					</p>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li class="active">Actualizar Rol</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<!-- Aqui va el contenido que se carga de todas las vistas -->
+				<form th:action="@{/role/updateRole}" method="post">
+					<input hidden="hidden" name="roleId" th:value="${role.roleId}" />
+					
+					<div class="form-group">
+						<label for="rolname">* Nombre Rol: </label>&nbsp; 
+						<span style="color:red;" th:if="${rolExists}">Este rol ya esta registrado.
+							Ingrese uno nuevo
+						</span> 
+						<input class="form-control" type="text"
+							name="name" id="name" required="required" th:value="${role.name}" />
+						<p style="color: #828282">Rol a ingresar.</p>
+					</div>
+					
+					<button type="submit" class="btn btn-primary">Guardar</button>
+					<a th:href="@{/role/listarRoles}" class="btn btn-danger">Volver</a>
+				</form>
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+</body>
+</html>
