@@ -25,23 +25,29 @@
 			<section class="content">
 
 				<!-- AQUI VA EL CONTENIDO -->
-				<form class="form-horizontal" th:action="@{/producto/add}" method="post"enctype="multipart/form-data">
+				<form class="form-horizontal" th:action="@{/producto/add}" method="post"enctype="multipart/form-data" id="formcrearproducto">
 					<fieldset>
 						<legend class="center-block">
 							Nuevo Producto <span style="font-size: small"> * es uncampo obligatorio</span>
 						</legend>
 
 						<div th:if="${existe}">
-					  <div class="box-body">
+						  <div class="box-body">
+								 <div class="alert alert-warning alert-dismissible text-center">
+					                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					                <h4><i class="icon fa fa-warning"></i> Precauci&oacute;n!</h4>
+					                El campo "Producto" ya existe!!!
+					             </div>
+							</div>
+					 	</div>
+							
+						<div class="box-body" id="notificacion" style="display: none;">
 							 <div class="alert alert-warning alert-dismissible text-center">
 				                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 				                <h4><i class="icon fa fa-warning"></i> Precauci&oacute;n!</h4>
-				                El campo "Producto" ya existe!!!
+				                Un "Producto" con ese nombre ya existe!!!
 				             </div>
 						</div>
-					 </div>
-							
-
 						<!-- PRODUCTO -->
 						<div class="form-group">
 							<!-- <label class="col-md-2 control-label" for="tipo_producto">* Tipo Contrato</label>-->
@@ -208,7 +214,7 @@
 						<div class="form-group">
 							<div class="col-md-2"></div>
 							<div class="col-md-8">
-								<button type="submit" class="btn btn-success">Guardar</button>
+								<button type="button" class="btn btn-success" onclick="javascript:validar()">Guardar</button>
 								<a class="btn btn-danger" th:href="@{/producto/listarProductos}">Cancelar</a>
 							</div>
 						</div>
@@ -226,7 +232,65 @@
 
 	<div th:replace="common/plantilla :: plugins"></div>
 
-
+	<script>
+		//AQUI SE LLENAN LOS DATOS  A ENVIAR DEL FORMULRIO Y SE EMPACAN EN JSON
+		$(document).ready(function() {
+			$("#producto").on("change", function(e){					
+				//alert("Valor=>"+this.value);
+				var nombreProducto = this.value;
+				if(nombreProducto != null){
+					//alert("Estoy en el if");
+					$.get("/producto/verificarNombreProducto?nombreProducto="+nombreProducto, function( data1 ) {
+						//alert("Estoy en el ajax");
+						//console.log(data1);
+				    	if(data1)
+				    	{
+				    		/*swal({
+				                  title: "Advertencia!",
+				                  text: "Ya existe un paquete con ese nombre, por favor cambiarlo",
+				                  icon: "warning",
+				                  button: "CERRAR!",
+				                });*/
+			    			$("#notificacion").show();
+			    			
+				            setTimeout(function() {
+			    		        $("#notificacion").fadeOut(1500);
+			    		    },4500);
+				    	}
+				    	else
+				    		console.log(data1);
+				    });
+				}
+			});
+		});
+		
+		function validar()
+		{ 
+			var nombreProducto = $("#producto").val(); 
+			if(nombreProducto != null)
+			{
+				$.get("/producto/verificarNombreProducto?nombreProducto="+nombreProducto, function( data1 ) 
+				{
+			    	if(data1)
+			    	{
+			    		
+			    		swal({
+			                  title: "Advertencia!",
+			                  text: "Ya existe un producto con ese nombre, por favor cambiarlo",
+			                  icon: "warning",
+			                  button: "CERRAR!",
+			                });
+		    			//$("#notificacion").show();
+			    	}
+			    	else
+			    	{
+			    		$("#formcrearproducto").submit();
+			    		//console.log("entra al else");
+			    	}
+			    });
+			}
+		}
+	</script>
 
 </body>
 </html>

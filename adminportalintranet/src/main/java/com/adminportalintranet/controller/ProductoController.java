@@ -1,16 +1,21 @@
 package com.adminportalintranet.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.adminportalintranet.domain.Producto;
 import com.adminportalintranet.domain.TipoContrato;
@@ -149,23 +154,19 @@ public class ProductoController {
 							 //@ModelAttribute("tipo_contrato") String tipo_contrato,
 							 RedirectAttributes redirectAttributes,
 							 HttpServletRequest request, Model model) 
-		{
-		/*
+	{
+		
 		producto.setFecha_edicicion(new Date());
 		
 		productoService.save(producto);
 	
 		model.addAttribute("Editado", true);
-		model.addAttribute("lead", producto);
+		model.addAttribute("producto", producto);
 		 
-		//INYECCION DE ATRIBUTOS A LA URL
-	    //redirectAttributes.addAttribute("id", idReturn);
-		 
-		   return "redirect:/producto/listarProductos";			
-		//return "leadInfo";
-		*/
+		return "redirect:/producto/listarProductos";			
 		
-		if(!productoService.isNombre_ProductoUnique(producto.getNombre_producto())) {
+		
+		/*if(!productoService.isNombre_ProductoUnique(producto.getNombre_producto())) {
 			boolean existe = true;
 			model.addAttribute("existe", existe);
 			return "editarProducto";//el valor existe en la base de datos
@@ -181,9 +182,27 @@ public class ProductoController {
 		    //redirectAttributes.addAttribute("id", idReturn);
 			 
 			return "redirect:/producto/listarProductos";	
-		}
+		}*/
 		   
 	}
 	
-
+	
+	//VERIFICA EL NOMBRE DEL PAQUETE PARA VER SI YA EXISTE
+	@GetMapping(value="/verificarNombreProducto")
+	@ResponseBody
+	public boolean verificarNombreProducto(@RequestParam("nombreProducto") String nombreProducto, Model model) 
+	{	
+		boolean existe;
+		//Map<String, Object> jsonMap = new HashMap<>();
+		
+		if(!productoService.isNombre_ProductoUnique(nombreProducto))
+			existe = true;
+		else
+			existe = false;
+		
+		//jsonMap.put("existe", existe);
+		//jsonMap.put("prueba", "hola");
+		//return new Gson().toJson(jsonMap);
+		return existe;
+	}
 }

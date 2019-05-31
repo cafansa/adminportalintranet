@@ -1,7 +1,9 @@
 package com.adminportalintranet.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -78,7 +80,7 @@ public class AjustesController {
 	@RequestMapping(value="/zonaAdd", method=RequestMethod.POST)
 	public String addLead(@ModelAttribute("zonaComercial") ZonaComercial zonaComercial,						
 						  HttpServletRequest request, Model model) {
-		/*
+		
 		zonaComercial.setFechaCreacionZona(new Date());
 		zonaComercialService.save(zonaComercial);
 		
@@ -87,7 +89,6 @@ public class AjustesController {
 		
 		return "redirect:/ajustes/listarZonas";
 		//return "listarZonas";
-		*/
 		
 		/*
 		if(!zonaComercialService.isZonaComercialNombreZonaUnique(zonaComercial.getIdZonaComercial(), zonaComercial.getNombreZona())){
@@ -97,7 +98,7 @@ public class AjustesController {
         */
 		
 		
-		if(!zonaComercialService.isNombreZonaUnique(zonaComercial.getNombreZona())) {
+		/*if(!zonaComercialService.isNombreZonaUnique(zonaComercial.getNombreZona())) {
 			boolean existe = true;
 			model.addAttribute("existe", existe);
 			return "NuevaZona";//el valor existe en la base de datos
@@ -110,7 +111,7 @@ public class AjustesController {
 			model.addAttribute("zonasComerciales", zonasComerciales);
 			
 			return "redirect:/ajustes/listarZonas";
-		}
+		}*/
 		
 	}
 	
@@ -138,16 +139,16 @@ public class AjustesController {
 	@RequestMapping(value="/editarZonaComercial", method=RequestMethod.POST)
 	public String updateZonaComercial(@ModelAttribute("zonaComercial") ZonaComercial zonaComercial, HttpServletRequest request, Model model) {		
 		
-		/*
+		
 		zonaComercial.setFechaEdicionZona(new Date());
 		zonaComercialService.save(zonaComercial);		
 		
 		model.addAttribute("Editado", true);
 		model.addAttribute("zonaComercial", zonaComercial);
 		
-		return "redirect:/ajustes/zonaComercialInfo";*/
+		return "redirect:/ajustes/zonaComercialInfo";
 		
-		if(!zonaComercialService.isNombreZonaUnique(zonaComercial.getNombreZona())) {
+		/*if(!zonaComercialService.isNombreZonaUnique(zonaComercial.getNombreZona())) {
 			
 			model.addAttribute("existe", true);
 			return "editarZonaComercial";//el valor existe en la base de datos
@@ -158,11 +159,9 @@ public class AjustesController {
 			
 			model.addAttribute("zonaComercial", zonaComercial);			
 			return "redirect:/ajustes/zonaComercialInfo";			
-		}
+		}*/
 			
 	}
-	
-	
 	
 	
 	//Controlador para el llamado de Ajax para cargar los estados o Dptos	
@@ -278,8 +277,44 @@ public class AjustesController {
 				
 				return "redirect:/ajustes/tipoEmpresaInfo";
 			}
-			
-
 		}
 		
+		//VERIFICA EL NOMBRE DE LA ZONA PARA VER SI YA EXISTE
+		@GetMapping(value="/verificarNombreZona")
+		@ResponseBody
+		public boolean verificarNombreZona(@RequestParam("nombreZona") String nombreZona, Model model) 
+		{	
+			boolean existe;
+			//Map<String, Object> jsonMap = new HashMap<>();
+			
+			if(!zonaComercialService.isNombreZonaUnique(nombreZona))
+				existe = true;
+			else
+				existe = false;
+			
+			//jsonMap.put("existe", existe);
+			//jsonMap.put("prueba", "hola");
+			//return new Gson().toJson(jsonMap);
+			return existe;
+		}
+		
+		
+		//VERIFICA EL NOMBRE DE DEL TIPO EMPRESA PARA VER SI YA EXISTE
+		@GetMapping(value="/verificarNombreTipoEmpresa")
+		@ResponseBody
+		public boolean verificarNombreTipoEmpresa(@RequestParam("nombreTipoEmpresa") String nombreTipoEmpresa, Model model) 
+		{	
+			boolean existe;
+			//Map<String, Object> jsonMap = new HashMap<>();
+			
+			if(!tipoEmpresaService.isNombreTipoEmpresaUnique(nombreTipoEmpresa))
+				existe = true;
+			else
+				existe = false;
+			
+			//jsonMap.put("existe", existe);
+			//jsonMap.put("prueba", "hola");
+			//return new Gson().toJson(jsonMap);
+			return existe;
+		}
 }

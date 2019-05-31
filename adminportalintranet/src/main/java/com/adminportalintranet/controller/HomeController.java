@@ -37,15 +37,18 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/admin")
-	public String admin() {
+	public String admin(Model model) {
 		
 		//LEER LOS DATOS DEL USUARIO EN SESION
 		final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
 		User usuarioLogged = userService.findByUsername(currentUserName);
 		final String nombreUsuario = usuarioLogged.getFirstName();
 		final String apellidoUsuario = usuarioLogged.getLastName();
+		final Long idUsuario = usuarioLogged.getId();
 		System.out.println("######################bUsuario en sesion "+currentUserName+" y se llama: "+nombreUsuario+" "+apellidoUsuario);
 		
+		model.addAttribute("currentUserName", currentUserName);
+		model.addAttribute("idUsuario", idUsuario);
 		return "admin";
 	}
 	

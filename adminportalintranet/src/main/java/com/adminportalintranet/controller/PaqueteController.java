@@ -1,19 +1,27 @@
 package com.adminportalintranet.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.adminportalintranet.domain.Paquete;
-import com.adminportalintranet.domain.Producto;
 import com.adminportalintranet.service.PaqueteService;
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/paquete")
@@ -96,11 +104,12 @@ public class PaqueteController {
 	}
 	
 	@RequestMapping(value="/editarPaquete", method=RequestMethod.POST)
-	public String updatePaquete(@ModelAttribute("paquete") Paquete paquete, 							 							 
-							 RedirectAttributes redirectAttributes,
-							 HttpServletRequest request, Model model) 
-		{						
-		/*
+	public String updatePaquete(@ModelAttribute("paquete") Paquete paquete,
+								@ModelAttribute("nombreAnterior") String nombreAnterior,
+							 	RedirectAttributes redirectAttributes,
+							 	HttpServletRequest request, Model model) 
+	{						
+		
 		paquete.setFechaModificacionPaquete(new Date());
 					
 		paqueteService.save(paquete);
@@ -108,24 +117,25 @@ public class PaqueteController {
 		model.addAttribute("Editado", true);
 		model.addAttribute("paquete", paquete);
 		 
-	   return "redirect:/paquete/listarPaquetes";	
-	   */
+		return "redirect:/paquete/listarPaquetes";	
+	}
+	
+	//VERIFICA EL NOMBRE DEL PAQUETE PARA VER SI YA EXISTE
+	@GetMapping(value="/verificarNombrePaquete")
+	@ResponseBody
+	public boolean verificarNombrePaquete(@RequestParam("nombrePaquete") String nombrePaquete, Model model) 
+	{	
+		boolean existe;
+		Map<String, Object> jsonMap = new HashMap<>();
 		
-		if(!paqueteService.isNombrePaqueteUnique(paquete.getNombrePaquete())) {
-			boolean existe = true;
-			model.addAttribute("existe", existe);
-			return "editarpaquete";//el valor existe en la base de datos
-		}
-		else {
-			paquete.setFechaModificacionPaquete(new Date());
-			
-			paqueteService.save(paquete);
+		if(!paqueteService.isNombrePaqueteUnique(nombrePaquete))
+			existe = true;
+		else
+			existe = false;
 		
-			model.addAttribute("Editado", true);
-			model.addAttribute("paquete", paquete);
-			 
-		   return "redirect:/paquete/listarPaquetes";	
-		
-			}
-		}
+		//jsonMap.put("existe", existe);
+		//jsonMap.put("prueba", "hola");
+		//return new Gson().toJson(jsonMap);
+		return existe;
+	}
 }

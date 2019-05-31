@@ -16,7 +16,7 @@
 				</h1>-->
 				<ol class="breadcrumb">
 					<li><a th:href="@{/tipoContrato/listarTipoContrato}"><i class="fa fa-dashboard"></i> Home</a></li>
-					<li class="active">Dashboard</li>
+					<li class="active">Editar tipo contrato</li>
 				</ol>
 			</section>
 
@@ -25,9 +25,10 @@
 			
 			<!-- AQUI VA EL CONTENIDO -->
 			<form class="form-horizontal" th:action="@{/tipoContrato/tipoContratoAdd}" method="post"
-				enctype="multipart/form-data">
+				enctype="multipart/form-data" id="formeditartipocontrato">
 				<fieldset>
 				<input hidden="hidden" name="idTipoContrato" th:value="${tipoContrato.idTipoContrato}" />
+				<input hidden="hidden" name="nombreTipoContratoAnterior" id="nombreTipoContratoAnterior" th:value="${tipoContrato.nombreTipoContrato}" />
 					<legend class="center-block">
 						Editar tipo contrato.<span style="font-size: small"> * es un campo obligatorio</span>
 					</legend>
@@ -42,6 +43,13 @@
 						</div>
 					 </div>
 					
+					<div class="box-body" id="notificacion" style="display: none;">
+						 <div class="alert alert-warning alert-dismissible text-center">
+			                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			                <h4><i class="icon fa fa-warning"></i> Precauci&oacute;n!</h4>
+			                Este tipo de contrato ya existe !!!
+			             </div>
+					</div>
 					
 						<!-- Nombre tipo contrato-->
 					<div class="form-group">
@@ -99,7 +107,8 @@
 					<div class="form-group">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<button type="submit" class="btn btn-success">Guardar</button>
+							<!-- <button type="submit" class="btn btn-success">Guardar</button> -->
+							<button type="button" class="btn btn-success" onclick="javascript:validar()">Guardar</button>
 							<a class="btn btn-danger" th:href="@{/tipoContrato/listarTipoContrato}">Cancelar</a>
 						</div>
 					</div>
@@ -117,6 +126,80 @@
 	<!-- ./wrapper -->
 	
 	<div th:replace="common/plantilla :: plugins"></div>
+	
+	<script type="text/javascript">
+
+		//AQUI SE LLENAN LOS DATOS  A ENVIAR DEL FORMULRIO Y SE EMPACAN EN JSON
+		$(document).ready(function() {
+			$("#nombreTipoContrato").on("change", function(e){					
+				//alert("Valor=>"+this.value);
+				var nombreTipoContrato = this.value;
+				if(nombreTipoContrato != null){
+					//alert("Estoy en el if");
+					$.get("/tipoContrato/verificarNombreTipoContrato?nombreTipoContrato="+nombreTipoContrato, function( data1 ) {
+						//alert("Estoy en el ajax");
+						//console.log(data1);
+				    	if(data1)
+				    	{
+				    		//console.log(data1['existe'])
+				    		
+				    		if($("#nombreTipoContratoAnterior").val() == nombreTipoContrato)
+				    			console.log("hola");
+				    		else
+				    		{
+					    		/*swal({
+					                  title: "Advertencia!",
+					                  text: "Ya existe un paquete con ese nombre, por favor cambiarlo",
+					                  icon: "warning",
+					                  button: "CERRAR!",
+					                });*/
+				    			$("#notificacion").show();
+				    			
+					            setTimeout(function() {
+				    		        $("#notificacion").fadeOut(1500);
+				    		    },4500);
+				    		}
+				    	}
+				    	else
+				    		console.log(data1);
+				    });
+				}
+			});
+		});
+		
+		function validar()
+		{ 
+			var nombreTipoContrato = $("#nombreTipoContrato").val();
+			var nombreTipoContratoAnterior = $("#nombreTipoContratoAnterior").val(); 
+			if(nombreTipoContrato != null)
+			{
+				$.get("/tipoContrato/verificarNombreTipoContrato?nombreTipoContrato="+nombreTipoContrato, function( data1 ) 
+				{
+			    	if(data1)
+			    	{
+			    		//console.log("entra al if");
+			    		if(nombreTipoContratoAnterior == nombreTipoContrato)
+			    			$("#formeditartipocontrato").submit();
+			    		else
+			    		{
+				    		swal({
+				                  title: "Advertencia!",
+				                  text: "Ya existe un tipo de contrato con ese nombre, por favor cambiarlo",
+				                  icon: "warning",
+				                  button: "CERRAR!",
+				                });
+			    			//$("#notificacion").show();
+			    		}
+			    	}
+			    	else
+			    	{
+			    		$("#formeditartipocontrato").submit();
+			    		//console.log("entra al else");
+			    	}
+			    });
+			}
+		}
+	</script>
 
 </body>
 </html>

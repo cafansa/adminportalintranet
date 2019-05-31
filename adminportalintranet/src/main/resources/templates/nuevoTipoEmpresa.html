@@ -16,7 +16,7 @@
 				</h1>-->
 				<ol class="breadcrumb">
 					<li><a th:href="@{/ajustes/listarTiposEmpresas}"><i class="fa fa-dashboard"></i> Home</a></li>
-					<li class="active">Dashboard</li>
+					<li class="active">Nuevo tipo de empresa</li>
 				</ol>
 			</section>
 
@@ -25,7 +25,7 @@
 			
 			<!-- AQUI VA EL CONTENIDO -->
 			<form class="form-horizontal" th:action="@{/ajustes/tipoEmpresaAdd}" method="post"
-				enctype="multipart/form-data">
+				enctype="multipart/form-data" id="formcreartipoempresa">
 				<fieldset>
 					<legend class="center-block">
 						Nuevo tipo de empresa. <span style="font-size: small"> * es un campo obligatorio</span>
@@ -36,14 +36,19 @@
 							 <div class="alert alert-warning alert-dismissible text-center">
 				                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 				                <h4><i class="icon fa fa-warning"></i> Precauci&oacute;n!</h4>
-				                El campo "Nombre" ya existe!!!
+				                Este tipo de empresa ya existe !!!
 				             </div>
 						</div>
-					 </div>
+					</div>
+					<div class="box-body" id="notificacion" style="display: none;">
+						 <div class="alert alert-warning alert-dismissible text-center">
+			                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			                <h4><i class="icon fa fa-warning"></i> Precauci&oacute;n!</h4>
+			                Este tipo de empresa ya existe !!!
+			             </div>
+					</div>
 					
-					
-					
-						<!-- Nombre del tipo de empresa-->
+					<!-- Nombre del tipo de empresa-->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="nombreTipoEmpresa">* Nombre </label>
 
@@ -61,7 +66,7 @@
 							<label><input value="1" type="radio" name="estado" id="estado"
 								checked="checked" /> Activo </label> <label>
 								<input th:value="0" type="radio" name="estado" />
-								Inactivo </label> <span class="help-block">Estado detipo de empresa, activo o Inactivo en el sistema. </span>
+								Inactivo </label> <span class="help-block">Estado de tipo de empresa, activo o Inactivo en el sistema. </span>
 						</div>
 					</div>
 
@@ -77,12 +82,11 @@
 						</div>
 					</div>
 
-					
-
 					<div class="form-group">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<button type="submit" class="btn btn-success">Guardar</button>
+							<!-- <button type="submit" class="btn btn-success">Guardar</button> -->
+							<button type="button" class="btn btn-success" onclick="javascript:validar()">Guardar</button>
 							<a class="btn btn-danger" th:href="@{/ajustes/listarTiposEmpresas}">Cancelar</a>
 						</div>
 					</div>
@@ -101,7 +105,65 @@
 	
 	<div th:replace="common/plantilla :: plugins"></div>
 	
-	
+	<script>
+			//AQUI SE LLENAN LOS DATOS  A ENVIAR DEL FORMULRIO Y SE EMPACAN EN JSON
+			$(document).ready(function() {
+				$("#nombreTipoEmpresa").on("change", function(e){					
+					//alert("Valor=>"+this.value);
+					var nombreTipoEmpresa = this.value;
+					if(nombreTipoEmpresa != null){
+						//alert("Estoy en el if");
+						$.get("/ajustes/verificarNombreTipoEmpresa?nombreTipoEmpresa="+nombreTipoEmpresa, function( data1 ) {
+							//alert("Estoy en el ajax");
+							//console.log(data1);
+					    	if(data1)
+					    	{
+					    		/*swal({
+					                  title: "Advertencia!",
+					                  text: "Ya existe un paquete con ese nombre, por favor cambiarlo",
+					                  icon: "warning",
+					                  button: "CERRAR!",
+					                });*/
+				    			$("#notificacion").show();
+				    			
+					            setTimeout(function() {
+				    		        $("#notificacion").fadeOut(1500);
+				    		    },4500);
+					    	}
+					    	else
+					    		console.log(data1);
+					    });
+					}
+				});
+			});
+			
+			function validar()
+			{ 
+				var nombreTipoEmpresa = $("#nombreTipoEmpresa").val(); 
+				if(nombreTipoEmpresa != null)
+				{
+					$.get("/ajustes/verificarNombreTipoEmpresa?nombreTipoEmpresa="+nombreTipoEmpresa, function( data1 ) 
+					{
+				    	if(data1)
+				    	{
+				    		
+				    		swal({
+				                  title: "Advertencia!",
+				                  text: "Ya existe un tipo de empresa con ese nombre, por favor cambiarlo",
+				                  icon: "warning",
+				                  button: "CERRAR!",
+				                });
+			    			//$("#notificacion").show();
+				    	}
+				    	else
+				    	{
+				    		$("#formcreartipoempresa").submit();
+				    		//console.log("entra al else");
+				    	}
+				    });
+				}
+			}
+		</script>
 	
 </body>
 </html>

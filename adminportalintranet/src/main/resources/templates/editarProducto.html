@@ -17,7 +17,7 @@
 				<ol class="breadcrumb">
 					<li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i>
 							Home</a></li>
-					<li class="active">Nuevo Producto</li>
+					<li class="active">Editar Producto</li>
 				</ol>
 			</section>
 
@@ -25,15 +25,22 @@
 			<section class="content">
 
 				<!-- AQUI VA EL CONTENIDO -->
-				<form class="form-horizontal" th:action="@{/producto/editarProducto}" method="post"enctype="multipart/form-data">
+				<form class="form-horizontal" th:action="@{/producto/editarProducto}" method="post" enctype="multipart/form-data" id="formeditarproducto" name="formeditarproducto">
 				   	<input hidden="hidden" name="id" th:value="${producto.id}" />
-				
+					<input hidden="hidden" name="nombreProductoAnterior" id="nombreProductoAnterior" th:value="${producto.nombre_producto}" />
 					<fieldset>
 						<legend class="center-block">
-							Nuevo Producto <span style="font-size: small"> * es un
+							Editar Producto <span style="font-size: small"> * es un
 								campo obligatorio</span>
 						</legend>
-
+						
+						<div class="box-body" id="notificacion" style="display: none;">
+							 <div class="alert alert-warning alert-dismissible text-center">
+				                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				                <h4><i class="icon fa fa-warning"></i> Precauci&oacute;n!</h4>
+				                Un "Producto" con ese nombre ya existe!!!
+				             </div>
+						</div>
 
 						<!-- PRODUCTO -->
 						<div class="form-group">
@@ -201,7 +208,7 @@
 						<div class="form-group">
 							<div class="col-md-2"></div>
 							<div class="col-md-8">
-								<button type="submit" class="btn btn-success">Guardar</button>
+								<button type="button" class="btn btn-success" onclick="javascript:validar()">Guardar</button>
 								<a class="btn btn-danger" th:href="@{/producto/listarProductos}">Cancelar</a>
 							</div>
 						</div>
@@ -218,7 +225,81 @@
 	<!-- ./wrapper -->
 
 	<div th:replace="common/plantilla :: plugins"></div>
+	
+	<!-- SCRIPT AJAX PARA LA TABLA-->
+	<script type="text/javascript">
 
+		//AQUI SE LLENAN LOS DATOS  A ENVIAR DEL FORMULRIO Y SE EMPACAN EN JSON
+		$(document).ready(function() {
+			$("#producto").on("change", function(e){					
+				//alert("Valor=>"+this.value);
+				var nombreProducto = this.value;
+				if(nombreProducto != null){
+					//alert("Estoy en el if");
+					$.get("/producto/verificarNombreProducto?nombreProducto="+nombreProducto, function( data1 ) {
+						//alert("Estoy en el ajax");
+						//console.log(data1);
+				    	if(data1)
+				    	{
+				    		//console.log(data1['existe'])
+				    		
+				    		if($("#nombreProductoAnterior").val() == nombreProducto)
+				    			console.log("hola");
+				    		else
+				    		{
+					    		/*swal({
+					                  title: "Advertencia!",
+					                  text: "Ya existe un paquete con ese nombre, por favor cambiarlo",
+					                  icon: "warning",
+					                  button: "CERRAR!",
+					                });*/
+				    			$("#notificacion").show();
+				    			
+					            setTimeout(function() {
+				    		        $("#notificacion").fadeOut(1500);
+				    		    },4500);
+				    		}
+				    	}
+				    	else
+				    		console.log(data1);
+				    });
+				}
+			});
+		});
+		
+		function validar()
+		{ 
+			var nombreProducto = $("#producto").val();
+			var nombreProductoAnterior = $("#nombreProductoAnterior").val(); 
+			if(nombreProducto != null)
+			{
+				$.get("/producto/verificarNombreProducto?nombreProducto="+nombreProducto, function( data1 ) 
+				{
+			    	if(data1)
+			    	{
+			    		console.log("entra al if");
+			    		if(nombreProductoAnterior == nombreProducto)
+			    			$("#formeditarproducto").submit();
+			    		else
+			    		{
+				    		swal({
+				                  title: "Advertencia!",
+				                  text: "Ya existe un producto con ese nombre, por favor cambiarlo",
+				                  icon: "warning",
+				                  button: "CERRAR!",
+				                });
+			    			//$("#notificacion").show();
+			    		}
+			    	}
+			    	else
+			    	{
+			    		$("#formeditarproducto").submit();
+			    		//console.log("entra al else");
+			    	}
+			    });
+			}
+		}
+	</script>
 
 
 </body>
