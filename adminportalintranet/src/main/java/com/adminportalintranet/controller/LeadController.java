@@ -17,14 +17,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.adminportalintranet.domain.City;
+import com.adminportalintranet.domain.Cliente;
+import com.adminportalintranet.domain.ConsecutivoOrdenesVenta;
 import com.adminportalintranet.domain.Countries;
 import com.adminportalintranet.domain.Lead;
+import com.adminportalintranet.domain.PaqueteProducto;
+import com.adminportalintranet.domain.Producto;
 import com.adminportalintranet.domain.State;
 import com.adminportalintranet.domain.TipoEmpresa;
 import com.adminportalintranet.domain.ZonaComercial;
 import com.adminportalintranet.service.CityService;
+import com.adminportalintranet.service.ClienteService;
+import com.adminportalintranet.service.ConsecutivoOrdenesVentaService;
 import com.adminportalintranet.service.CountryService;
 import com.adminportalintranet.service.LeadService;
+import com.adminportalintranet.service.PaqueteProductoService;
+import com.adminportalintranet.service.ProductoService;
 import com.adminportalintranet.service.StateService;
 import com.adminportalintranet.service.TipoEmpresaService;
 import com.adminportalintranet.service.ZonaComercialService;
@@ -50,6 +58,18 @@ public class LeadController {
 	
 	@Autowired
 	private TipoEmpresaService tipoEmpresaService;
+	
+	@Autowired
+	private ConsecutivoOrdenesVentaService consecutivoOrdenesVentaService;
+	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@Autowired
+	private ProductoService productoService;
+	
+	@Autowired
+	private PaqueteProductoService paqueteProductoService;
 	
 	
 
@@ -105,13 +125,14 @@ public class LeadController {
 		//return "listarLeads";
 	}
 	
+	//copia seguridad funcion
 	/* CONTROLADOR PARA CONSULTAR LA INFORMACION DE UN LEAD */
-	@RequestMapping("/leadInfo")
+	/*@RequestMapping("/leadInfo")
 	public String leadInfo(@RequestParam("id") Long id,  Model model) {
 		
 		Lead lead = leadService.findOne(id);
 		
-		/*
+		//inicio comentario /*
 		//ENCONTRAR EL OBLJETO PARA PONER EL NOMBRE DEL PAIS
 		int idPais = lead.getCountry();		
 		Countries country = countryService.findOne(Long.valueOf(idPais));
@@ -123,12 +144,30 @@ public class LeadController {
 		//ENCONTRAR EL OBLJETO PARA PONER EL NOMBRE DE LA CIUDAD
 		int idCiudad = lead.getCity();
 		City city = cityService.findOne(Long.valueOf(idCiudad));
-		*/
 		
-		/*
+		
+		
 		model.addAttribute("country", country);	
 		model.addAttribute("state", state);
-		model.addAttribute("city", city);*/
+		model.addAttribute("city", city);
+		//  fin comentado 
+		String idZona = lead.getZona();
+		ZonaComercial zonaComercial = zonaComercialService.findOne(Long.valueOf(idZona));
+		
+		String idTipoEmpresa = lead.getTipoEmpresa();
+		TipoEmpresa tipoEmpresa = tipoEmpresaService.findOne(Long.valueOf(idTipoEmpresa));
+		
+		model.addAttribute("zonaComercial", zonaComercial);
+		model.addAttribute("tipoEmpresa", tipoEmpresa);		
+		model.addAttribute("lead", lead);
+		 
+		return "leadInfo";
+	}*/
+	
+	@RequestMapping("/leadInfo")
+	public String leadInfo(@RequestParam("id") Long id,  Model model) {
+		
+		Lead lead = leadService.findOne(id);
 		
 		String idZona = lead.getZona();
 		ZonaComercial zonaComercial = zonaComercialService.findOne(Long.valueOf(idZona));
@@ -136,14 +175,36 @@ public class LeadController {
 		String idTipoEmpresa = lead.getTipoEmpresa();
 		TipoEmpresa tipoEmpresa = tipoEmpresaService.findOne(Long.valueOf(idTipoEmpresa));
 		
+		Boolean estado=true;
+		
+		List<ConsecutivoOrdenesVenta> consecutivoordenesventa = consecutivoOrdenesVentaService.findConsecsAbiertosCliente(id, estado);
 		
 		model.addAttribute("zonaComercial", zonaComercial);
 		model.addAttribute("tipoEmpresa", tipoEmpresa);		
 		model.addAttribute("lead", lead);
-		 
-		return "leadInfo";
+		
+		if(consecutivoordenesventa.size() == 1)
+		{
+			List<Cliente> cliente = clienteService.findAllByConsecutivoOrden(consecutivoordenesventa.get(0).getIdOrdenVenta());
+		
+			//List<TipoContrato> tiposContratos = tipoContratoService.findAllByEstado(1);// EL VALOR 1 SIGNIFICA QUE ESTA ACTIVO
+			
+			List<PaqueteProducto> paquetes = paqueteProductoService.findAllActiveGroupByIdPaquete(1);//Todos los paquetes comerciales Activos
+			List<Producto> productos =  productoService.findAllByEstado(1);
+			
+			
+			model.addAttribute("lead", id);
+			model.addAttribute("cliente", cliente.get(0));
+			//model.addAttribute("tiposContratos", tiposContratos);	
+			model.addAttribute("paquetes", paquetes);
+			model.addAttribute("productos", productos);
+			model.addAttribute("consecutivoOrden", consecutivoordenesventa.get(0).getIdOrdenVenta());
+			
+			return "redirect:/cliente/CrearClientexLead?id="+id+"&consecutivoOrden="+consecutivoordenesventa.get(0).getIdOrdenVenta();
+		}
+		else	
+			return "leadInfo";
 	}
-	
 	
 	@RequestMapping("/NuevoLead")
 	public String NuevoLead(Model model) {
