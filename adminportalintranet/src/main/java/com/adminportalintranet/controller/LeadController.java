@@ -1,6 +1,7 @@
 package com.adminportalintranet.controller;
 
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -179,6 +180,11 @@ public class LeadController {
 		
 		List<ConsecutivoOrdenesVenta> consecutivoordenesventa = consecutivoOrdenesVentaService.findConsecsAbiertosCliente(id, estado);
 		
+		//List<TipoContrato> tiposContratos = tipoContratoService.findAllByEstado(1);// EL VALOR 1 SIGNIFICA QUE ESTA ACTIVO
+		
+		List<PaqueteProducto> paquetes = paqueteProductoService.findAllActiveGroupByIdPaquete(1);//Todos los paquetes comerciales Activos
+		List<Producto> productos =  productoService.findAllByEstado(1);
+		
 		model.addAttribute("zonaComercial", zonaComercial);
 		model.addAttribute("tipoEmpresa", tipoEmpresa);		
 		model.addAttribute("lead", lead);
@@ -186,12 +192,6 @@ public class LeadController {
 		if(consecutivoordenesventa.size() == 1)
 		{
 			List<Cliente> cliente = clienteService.findAllByConsecutivoOrden(consecutivoordenesventa.get(0).getIdOrdenVenta());
-		
-			//List<TipoContrato> tiposContratos = tipoContratoService.findAllByEstado(1);// EL VALOR 1 SIGNIFICA QUE ESTA ACTIVO
-			
-			List<PaqueteProducto> paquetes = paqueteProductoService.findAllActiveGroupByIdPaquete(1);//Todos los paquetes comerciales Activos
-			List<Producto> productos =  productoService.findAllByEstado(1);
-			
 			
 			model.addAttribute("lead", id);
 			model.addAttribute("cliente", cliente.get(0));
@@ -201,6 +201,29 @@ public class LeadController {
 			model.addAttribute("consecutivoOrden", consecutivoordenesventa.get(0).getIdOrdenVenta());
 			
 			return "redirect:/cliente/CrearClientexLead?id="+id+"&consecutivoOrden="+consecutivoordenesventa.get(0).getIdOrdenVenta();
+		}
+		else if(consecutivoordenesventa.size() > 1)
+		{
+			Hashtable<Long,String> cantidadproductos = new Hashtable<Long,String>();
+	
+			for(ConsecutivoOrdenesVenta consecutivoOrden : consecutivoordenesventa)
+			{
+				int i=0;
+				List<Cliente> paquetesProductos = clienteService.findAllByConsecutivoOrden(consecutivoOrden.getIdOrdenVenta());
+				for(Cliente paqueteP : paquetesProductos)
+					i++;
+				int indice = consecutivoOrden.getIdOrdenVenta().intValue();
+				
+				cantidadproductos.put(consecutivoOrden.getIdOrdenVenta(), String.valueOf(i));
+			}
+			//System.out.println(">>>>>>>>>>>>>>El id cantidadesproductos: "+cantidadproductos);
+			
+			model.addAttribute("ordenes",consecutivoordenesventa);
+			model.addAttribute("paquetes", paquetes);
+			model.addAttribute("productos", productos);
+			model.addAttribute("cantidadproductos",cantidadproductos);
+			
+			return "listarOrdenes";
 		}
 		else	
 			return "leadInfo";

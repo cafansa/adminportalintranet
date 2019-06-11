@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/plantilla :: common-header" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<div th:replace="common/plantilla :: header-main-header"></div>
+
+		<div th:replace="common/plantilla :: sidebar"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					<p>
+						<a th:href="@{/lead/EditarLead(id=${lead.id})}" class="btn btn-success"> Editar Lead </a>
+						<a th:href="@{/cliente/GenerarNuevoConsecutivo(id=${lead.id})}" class="btn btn-info"> Nueva Orden </a> 
+						<a class="btn btn-danger" th:href="@{/lead/listarLeads}">Regresar</a>
+						<div class="box-body" th:if="${Editado}">
+							<div class="alert alert-success alert-dismissible text-center">
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">&times;</button>
+								<h4>
+									<i class="icon fa fa-check"></i>LEAD MODIFICADO.
+								</h4>
+	
+							</div>
+						</div>
+					</p>
+
+					<!-- Detalle del LEAD ......  -->
+
+				</h1>
+				<ol class="breadcrumb">
+					<li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i>
+							Home</a></li>
+					<li class="active">
+						 <i class="fa fa-user" aria-hidden="true">
+						 </i> Listado &oacute;rdenes</li>					
+					
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<!-- AQUI VA EL CONTENIDO -->
+				<form class="form-horizontal" action="" method="post" id="itemsClienteSubmit">
+			      
+			      <input hidden="hidden" name="idProspecto" id="idProspecto" th:value="${lead.id}" />
+			      <!--  <input hidden="hidden" name="consecutivoOrden" id="consecutivoOrden" th:value="${consecutivoOrden}" /> -->
+			
+					<div class="container">
+						<div class="col-md-12">
+							<!-- Box Comment -->
+							<div class="box box-widget">
+								<div class="box-header with-border">
+									<div class="user-block">
+										<div class="row">
+											<div class="col-xs-6">
+												<img class="img-circle" src="../dist/img/user1-128x128.jpg"
+													alt="User Image" /> <span class="username"> <span
+													th:text="${lead.empresa}"></span>
+												</span> <span class="description"><span
+													th:text="${lead.NombreTipoEmpresa}"> </span>
+													<p>
+														Creada el: <span th:text="${lead.fechaCreacion}"></span>
+													</p> </span>
+											</div>
+											<div class="col-xs-6">
+												<span th:text="${lead.countryName}"></span>
+												<p>
+													<span th:text="${lead.stateName}" /> <label> / </label> <span
+														th:text="${lead.cityName}" />
+												</p>
+											</div>
+										</div>
+		
+									</div>
+									<!-- /.user-block -->
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool"
+											data-toggle="tooltip" title="Mark as read">
+											<i class="fa fa-circle-o"></i>
+										</button>
+										<button type="button" class="btn btn-box-tool"
+											data-widget="collapse">
+											<i class="fa fa-minus"></i>
+										</button>
+										<!-- <button type="button" class="btn btn-box-tool"
+											data-widget="remove">
+											<i class="fa fa-times"></i>
+										</button>-->
+									</div>
+									<!-- /.box-tools -->
+								</div>
+								<!-- /.box-header -->
+								<!-- Lista de órdenes -->
+								<div class="attachment-block clearfix" id="ordenesCliente">
+									<div class="col-xs-12">
+										<h4 class="attachment-heading">
+											<p></p>
+											<strong>&Oacute;rdenes activas: </strong>
+										</h4>
+										<div class="attachment-text">										
+											<div class="box-body">
+												<table id="example1" class="table table-bordered table-striped">
+													<thead>
+														<tr>
+															<!-- <th>Id</th>-->									
+															<th>Consultar</th>
+															<th>Nro Orden</th>																		
+															<th>Fecha Orden</th>
+															<th>Cantidad productos</th>					
+														</tr>
+													</thead>
+													<tbody>
+														<tr data-th-each="orden : ${ordenes}">									 							
+													        <td><a th:href="@{/cliente/CrearClientexLead(id=${lead.id}, consecutivoOrden=${orden.idOrdenVenta})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Continuar</a></td>
+													        <td th:text="${orden.idOrdenVenta}"></td>
+													        <td th:text="${orden.fechaCreacionConsecutivo}"></td>
+															<td th:text="${cantidadproductos.get(orden.idOrdenVenta)}"></td>
+														</tr>
+													</tbody>
+													
+												</table>
+											</div>
+										</div>
+										<!-- /.attachment-text -->
+									</div>
+									<!-- /.attachment-pushed -->
+								</div>
+								<!-- /.box-footer -->
+							</div>
+							<!-- /.box -->
+							  
+						</div>
+						<!-- /.col -->
+					</div>
+				<!-- Form Close -->
+				</form>
+			</section>
+       </div>
+		<!-- /.content-wrapper -->
+
+		<div th:replace="common/plantilla :: main_footer"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<div th:replace="common/plantilla :: plugins"></div>
+	
+	<!-- Script DataTable -->
+	<script>
+		$(function() {
+			$('#example1').DataTable()			
+		})
+	</script>
+	
+</body>
+</html>
