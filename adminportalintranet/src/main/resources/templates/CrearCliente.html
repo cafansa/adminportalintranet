@@ -13,9 +13,10 @@
 			<section class="content-header">
 				<h1>
 					<p>
-						<a th:href="@{/lead/EditarLead(id=${lead.id})}" class="btn btn-success"> Editar Lead </a> <a class="btn btn-danger"
-							th:href="@{/lead/listarLeads}">Regresar</a>
-								<div class="box-body" th:if="${Editado}">
+						<a th:href="@{/cliente/GenerarNuevoConsecutivo(id=${lead.id})}" class="btn btn-info"> Nueva Orden </a>
+						<a th:href="@{/lead/EditarLead(id=${lead.id})}" class="btn btn-success"> Editar Lead </a> 
+						<a class="btn btn-danger" th:href="@{/lead/listarLeads}">Regresar</a>
+						<div class="box-body" th:if="${Editado}">
 							<div class="alert alert-success alert-dismissible text-center">
 								<button type="button" class="close" data-dismiss="alert"
 									aria-hidden="true">&times;</button>
@@ -196,7 +197,7 @@
 							</div>
 							<!-- /.box -->
 							
-							<a th:href="@{/cliente/GenerarNuevoConsecutivo(id=${lead.id})}" class="btn btn-block btn-info btn-lg"> Nueva Orden </a>
+							<a th:href="@{/cliente/FinalizarOrden/{id}/{consecutivoOrden} (id=${lead.id}, consecutivoOrden=${consecutivoOrden})}" class="btn btn-block btn-warning btn-lg"> Checkout Orden </a>
 							  
 						</div>
 						<!-- /.col -->

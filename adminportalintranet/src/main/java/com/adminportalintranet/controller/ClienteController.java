@@ -2,6 +2,7 @@ package com.adminportalintranet.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -308,5 +309,62 @@ public class ClienteController {
 			
 			
 			return "CrearCliente";
+		}
+		
+		@GetMapping(value="/FinalizarOrden")
+		public String FinalizarOrden(@RequestParam("id") Long id, @RequestParam("consecutivoOrden") Long consecutivoOrden, Model model)
+		{
+			ConsecutivoOrdenesVenta consecutivoorden = consecutivoOrdenesVentaService.findOne(consecutivoOrden);
+			consecutivoorden.setEstado(false);
+			consecutivoorden.setFechaCreacionConsecutivo(new Date());
+			
+			final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+			User usuarioLogged = userService.findByUsername(currentUserName);
+			final String nombreUsuario = usuarioLogged.getFirstName();
+			
+			consecutivoorden.setModificadoPorConsecutivo(nombreUsuario);
+			consecutivoOrdenesVentaService.save(consecutivoorden);
+			
+			List<Cliente> paquetesOrdenes = clienteService.findAllByConsecutivoOrden(consecutivoOrden);
+			for(Cliente ordendetallada : paquetesOrdenes)
+			{
+				ordendetallada.setCerrado(true);
+				clienteService.save(ordendetallada);
+			}
+			
+			Lead lead = leadService.findOne(id);
+		
+			//List<TipoContrato> tiposContratos = tipoContratoService.findAllByEstado(1);// EL VALOR 1 SIGNIFICA QUE ESTA ACTIVO
+			
+			List<PaqueteProducto> paquetes = paqueteProductoService.findAllActiveGroupByIdPaquete(1);//Todos los paquetes comerciales Activos
+			List<Producto> productos =  productoService.findAllByEstado(1);
+			
+			
+			
+			model.addAttribute("lead", lead);
+			
+			Hashtable<Long,String> cantidadproductos = new Hashtable<Long,String>();
+			Boolean estado=true;
+			List<ConsecutivoOrdenesVenta> consecutivoordenesventa = consecutivoOrdenesVentaService.findConsecsAbiertosCliente(id, estado);
+			
+			for(ConsecutivoOrdenesVenta consecutivo : consecutivoordenesventa)
+			{
+				int i=0;
+				List<Cliente> paquetesProductos = clienteService.findAllByConsecutivoOrden(consecutivo.getIdOrdenVenta());
+				for(Cliente paqueteP : paquetesProductos)
+					i++;
+				int indice = consecutivo.getIdOrdenVenta().intValue();
+				
+				cantidadproductos.put(consecutivo.getIdOrdenVenta(), String.valueOf(i));
+			}
+			//System.out.println(">>>>>>>>>>>>>>El id cantidadesproductos: "+cantidadproductos);
+			
+			model.addAttribute("ordenes",consecutivoordenesventa);
+			model.addAttribute("paquetes", paquetes);
+			model.addAttribute("productos", productos);
+			model.addAttribute("cantidadproductos",cantidadproductos);
+			
+			return "listarOrdenes";
+			
 		}
 	}
