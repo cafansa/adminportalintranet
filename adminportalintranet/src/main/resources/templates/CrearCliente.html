@@ -154,8 +154,8 @@
 																<th>Tipo</th>																		
 																<th>Valor</th>
 																<th>Agreado el</th>
-																<th>Acci&oacute;n</th>
-																<th>Eliminar</th>																																	
+																<th>Eliminar</th>
+																<th>Consultar</th>																																	
 															</tr>
 														</thead>
 														<tbody>
@@ -196,9 +196,8 @@
 								<!-- /.box-footer -->
 							</div>
 							<!-- /.box -->
-							
-							<a th:href="@{/cliente/FinalizarOrden/{id}/{consecutivoOrden} (id=${lead.id}, consecutivoOrden=${consecutivoOrden})}" class="btn btn-block btn-warning btn-lg"> Checkout Orden </a>
 							  
+							<a th:href="@{/cliente/FinalizarOrden(id=${lead.id}, consecutivoOrden=${consecutivoOrden})}" class="btn btn-block btn-warning btn-lg"> Checkout Orden </a>
 						</div>
 						<!-- /.col -->
 					</div>

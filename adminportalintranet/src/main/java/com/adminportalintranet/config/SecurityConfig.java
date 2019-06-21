@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	private static final String[] PUBLIC_MATCHERS = {
-			"/**", //BORRAR AL PONER EN PRODUCCION
+			//"/**", //BORRAR AL PONER EN PRODUCCION
 			"/bower_components/**",
 			"/build/**",
 			"/dist/**",
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable().cors().disable()
 			.formLogin().failureUrl("/?error")
 			.defaultSuccessUrl("/admin")
-			.loginPage("/login").permitAll()
+			.loginPage("/").permitAll()
 			.and()
 			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 			.logoutSuccessUrl("/?logout").deleteCookies("remember-me").permitAll()

@@ -9,6 +9,5 @@ public interface ConsecutivoOrdenesVentaService {
 	List<ConsecutivoOrdenesVenta> findAll();
 	ConsecutivoOrdenesVenta findOne(Long idOrdenVenta);
 	List<ConsecutivoOrdenesVenta> findConsecsAbiertosCliente(Long idLead, Boolean estado);
-	 
-
+	List<ConsecutivoOrdenesVenta> findConsecsByEstado(Boolean estado);
 }

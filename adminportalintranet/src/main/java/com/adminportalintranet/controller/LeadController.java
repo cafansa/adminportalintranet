@@ -372,8 +372,5 @@ public class LeadController {
 	
 	    List<City> cities = cityService.findByStateId(state);
 	    return cities;  	
-	}
-
-	
-	
+	}	
 }

@@ -29,4 +29,8 @@ public class ConsecutivoOrdenesVentaServiceImpl implements ConsecutivoOrdenesVen
 		return (List<ConsecutivoOrdenesVenta>) consecutivoOrdenesVentaRepository.findConsecsAbiertosCliente(idLead, estado); 
 	}
 	
+	public List<ConsecutivoOrdenesVenta> findConsecsByEstado(Boolean estado){
+		return (List<ConsecutivoOrdenesVenta>) consecutivoOrdenesVentaRepository.findConsecsByEstado(estado);
+	}
+	
 }

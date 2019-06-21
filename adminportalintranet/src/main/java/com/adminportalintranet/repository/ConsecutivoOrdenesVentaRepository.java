@@ -13,4 +13,8 @@ public interface ConsecutivoOrdenesVentaRepository extends CrudRepository<Consec
 	@Query("select a from ConsecutivoOrdenesVenta a where a.idLead =:idLead and a.estado=:estado")
 	public List<ConsecutivoOrdenesVenta> findConsecsAbiertosCliente(Long idLead, Boolean estado);
 	
+	//OBTENER LA LISTA DE CONSECUTIVOS POR ESTADO
+	@Query("select distinct a from ConsecutivoOrdenesVenta a where a.estado=:estado")
+	public List<ConsecutivoOrdenesVenta> findConsecsByEstado(Boolean estado);
+	
 }

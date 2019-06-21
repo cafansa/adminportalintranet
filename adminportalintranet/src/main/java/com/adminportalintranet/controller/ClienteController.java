@@ -1,8 +1,8 @@
 package com.adminportalintranet.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -311,60 +311,63 @@ public class ClienteController {
 			return "CrearCliente";
 		}
 		
-		@GetMapping(value="/FinalizarOrden")
+		@RequestMapping ("/FinalizarOrden")
 		public String FinalizarOrden(@RequestParam("id") Long id, @RequestParam("consecutivoOrden") Long consecutivoOrden, Model model)
 		{
-			ConsecutivoOrdenesVenta consecutivoorden = consecutivoOrdenesVentaService.findOne(consecutivoOrden);
-			consecutivoorden.setEstado(false);
-			consecutivoorden.setFechaCreacionConsecutivo(new Date());
+			ConsecutivoOrdenesVenta corden = consecutivoOrdenesVentaService.findOne(consecutivoOrden);
+			corden.setEstado(false);
+			corden.setFechaCreacionConsecutivo(new Date());
+			
 			
 			final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
 			User usuarioLogged = userService.findByUsername(currentUserName);
 			final String nombreUsuario = usuarioLogged.getFirstName();
 			
-			consecutivoorden.setModificadoPorConsecutivo(nombreUsuario);
-			consecutivoOrdenesVentaService.save(consecutivoorden);
+			corden.setModificadoPorConsecutivo(nombreUsuario);
+			
+			//System.out.println("<><><><><><><><><><>estado=>"+corden.getEstado()+" idordenventa=>"+corden.getIdOrdenVenta()+"  usuario==>"+corden.getModificadoPorConsecutivo());
+			consecutivoOrdenesVentaService.save(corden);
+			
 			
 			List<Cliente> paquetesOrdenes = clienteService.findAllByConsecutivoOrden(consecutivoOrden);
 			for(Cliente ordendetallada : paquetesOrdenes)
 			{
+				ordendetallada.setFechaModificacionCliente(new Date());
+				ordendetallada.setModificadoCliente(nombreUsuario);
 				ordendetallada.setCerrado(true);
 				clienteService.save(ordendetallada);
 			}
 			
-			Lead lead = leadService.findOne(id);
+			return "redirect:/lead/leadInfo?id="+id;
+		}
 		
-			//List<TipoContrato> tiposContratos = tipoContratoService.findAllByEstado(1);// EL VALOR 1 SIGNIFICA QUE ESTA ACTIVO
+		@RequestMapping("/listarclientes")
+		public String listarclientes(Model model) {
 			
-			List<PaqueteProducto> paquetes = paqueteProductoService.findAllActiveGroupByIdPaquete(1);//Todos los paquetes comerciales Activos
-			List<Producto> productos =  productoService.findAllByEstado(1);
+			//List<Lead> leads = leadService.findAll();
+			//List<TipoEmpresa> tiposEmpresas = tipoEmpresaService.findAll();	
+			
+			//model.addAttribute("tiposEmpresas", tiposEmpresas);
+			//model.addAttribute("leads", leads);
+			
+			Boolean estado = false;
+			List<ConsecutivoOrdenesVenta> consecutivoordenesventa = consecutivoOrdenesVentaService.findConsecsByEstado(estado);
 			
 			
-			
-			model.addAttribute("lead", lead);
-			
-			Hashtable<Long,String> cantidadproductos = new Hashtable<Long,String>();
-			Boolean estado=true;
-			List<ConsecutivoOrdenesVenta> consecutivoordenesventa = consecutivoOrdenesVentaService.findConsecsAbiertosCliente(id, estado);
-			
-			for(ConsecutivoOrdenesVenta consecutivo : consecutivoordenesventa)
+			List<Lead>leads = new ArrayList<Lead>();
+			Lead leadprospecto= new Lead();
+			int i=0;
+			for(ConsecutivoOrdenesVenta consec : consecutivoordenesventa)
 			{
-				int i=0;
-				List<Cliente> paquetesProductos = clienteService.findAllByConsecutivoOrden(consecutivo.getIdOrdenVenta());
-				for(Cliente paqueteP : paquetesProductos)
-					i++;
-				int indice = consecutivo.getIdOrdenVenta().intValue();
-				
-				cantidadproductos.put(consecutivo.getIdOrdenVenta(), String.valueOf(i));
+				System.out.println("==========================================================consecutivo->"+consec.getIdOrdenVenta());
+				leadprospecto=leadService.findOne(consec.getIdLead());
+				System.out.println("==========================================================prospecto->"+leadprospecto.getEmpresa());
+				//leads.add(leadprospecto);
+				 leads.add(i, leadprospecto);
+				 i=i+1;
 			}
-			//System.out.println(">>>>>>>>>>>>>>El id cantidadesproductos: "+cantidadproductos);
 			
-			model.addAttribute("ordenes",consecutivoordenesventa);
-			model.addAttribute("paquetes", paquetes);
-			model.addAttribute("productos", productos);
-			model.addAttribute("cantidadproductos",cantidadproductos);
-			
-			return "listarOrdenes";
-			
+			model.addAttribute("leads", leads);
+			return "listarclientes";
 		}
 	}
