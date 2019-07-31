@@ -359,9 +359,9 @@ public class ClienteController {
 			int i=0;
 			for(ConsecutivoOrdenesVenta consec : consecutivoordenesventa)
 			{
-				System.out.println("==========================================================consecutivo->"+consec.getIdOrdenVenta());
+				//System.out.println("==========================================================consecutivo->"+consec.getIdOrdenVenta());
 				leadprospecto=leadService.findOne(consec.getIdLead());
-				System.out.println("==========================================================prospecto->"+leadprospecto.getEmpresa());
+				//System.out.println("==========================================================prospecto->"+leadprospecto.getEmpresa());
 				//leads.add(leadprospecto);
 				 leads.add(i, leadprospecto);
 				 i=i+1;

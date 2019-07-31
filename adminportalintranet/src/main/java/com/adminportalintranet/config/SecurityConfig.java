@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	private static final String[] PUBLIC_MATCHERS = {
-			//"/**", //BORRAR AL PONER EN PRODUCCION
+			"/**", //BORRAR AL PONER EN PRODUCCION
 			"/bower_components/**",
 			"/build/**",
 			"/dist/**",

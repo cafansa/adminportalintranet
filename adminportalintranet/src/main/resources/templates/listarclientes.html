@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1000/xhtml">
 <head th:replace="common/plantilla :: common-header" />
 <body class="hold-transition skin-blue sidebar-mini">
@@ -33,7 +33,8 @@
 							<thead>
 								<tr>
 									<!-- <th>Id</th>-->									
-									<th>Consultar</th>
+									<th>Serial</th>
+									<th>Licencias y equipos</th>
 									<th>Empresa</th>																		
 									<th>Tipo</th>
 									<th>Pa&iacute;s</th>
@@ -45,7 +46,8 @@
 							<tbody>
 								<tr data-th-each="lead : ${leads}">									 							
 							   <!-- <td><a th:href="@{/lead/leadInfo(id=${lead.id})}" ><span th:text="${lead.empresa}" ></a></td> -->
-							        <td><a th:href="@{/serial/GestionarSerial(id=${lead.id})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Gestionar serial y licencias</a></td>
+							        <td><a th:href="@{/serial/GestionarSerial(id=${lead.id})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Gestionar serial</a></td>
+							        <td><a th:href="@{/serial/GestionarLicencias(id=${lead.id})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Gestionar licencias</a></td>
 							        <td th:text="${lead.empresa}"></td>							        									
 									<td th:text="${lead.NombreTipoEmpresa}"></td>
 									<td th:text="${lead.countryName}"></td>									
