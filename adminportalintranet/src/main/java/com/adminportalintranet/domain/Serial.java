@@ -4,17 +4,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
+@SequenceGenerator(name="seq", initialValue=1, allocationSize=100)
 @Table(name="serial")
 public class Serial {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
+	//@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String serial;
 	private Long idlead;
+	private Boolean activo;
 	
 	public Serial() {
 		// TODO Auto-generated constructor stub
@@ -44,4 +48,14 @@ public class Serial {
 	public void setIdlead(Long idlead) {
 		this.idlead = idlead;
 	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+	
+	
 }
