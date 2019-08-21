@@ -23,12 +23,14 @@ import com.adminportalintranet.domain.ConsecutivoOrdenesVenta;
 import com.adminportalintranet.domain.Lead;
 import com.adminportalintranet.domain.PaqueteProducto;
 import com.adminportalintranet.domain.Producto;
+import com.adminportalintranet.domain.Serial;
 import com.adminportalintranet.domain.User;
 import com.adminportalintranet.service.ClienteService;
 import com.adminportalintranet.service.ConsecutivoOrdenesVentaService;
 import com.adminportalintranet.service.LeadService;
 import com.adminportalintranet.service.PaqueteProductoService;
 import com.adminportalintranet.service.ProductoService;
+import com.adminportalintranet.service.SerialService;
 import com.adminportalintranet.service.UserService;
 import com.google.gson.Gson;
 
@@ -53,6 +55,9 @@ public class ClienteController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private SerialService serialService;
 	
 	@RequestMapping("/CrearCliente")
 	public String CrearCliente(@RequestParam("id") Long id,  Model model) {
@@ -357,17 +362,32 @@ public class ClienteController {
 			List<Lead>leads = new ArrayList<Lead>();
 			Lead leadprospecto= new Lead();
 			int i=0;
+			
+			Map<Long, String> seriales = new HashMap<Long,String>();
+			String sr=null;
 			for(ConsecutivoOrdenesVenta consec : consecutivoordenesventa)
 			{
+				Long idlead=consec.getIdLead();
 				//System.out.println("==========================================================consecutivo->"+consec.getIdOrdenVenta());
-				leadprospecto=leadService.findOne(consec.getIdLead());
+				leadprospecto=leadService.findOne(idlead);
 				//System.out.println("==========================================================prospecto->"+leadprospecto.getEmpresa());
 				//leads.add(leadprospecto);
 				 leads.add(i, leadprospecto);
 				 i=i+1;
+				 
+				 //proceso para obtener el serial del lead.
+				 Serial serial=serialService.findByidlead(idlead);
+				 if(serial==null)
+					 sr="";
+				 else
+					 sr=serial.getSerial();
+				 
+				 seriales.put(idlead, sr);
 			}
 			
+			System.out.println("==========================================================Seriales->"+seriales);
 			model.addAttribute("leads", leads);
+			model.addAttribute("seriales",seriales);
 			return "listarclientes";
 		}
 	}

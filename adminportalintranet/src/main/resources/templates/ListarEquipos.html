@@ -16,7 +16,7 @@
 				</h1>
 				<ol class="breadcrumb">
 					<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-					<li class="active">Listar Clientes</li>
+					<li class="active">Listar Equipos</li>
 				</ol>
 			</section>
 
@@ -33,29 +33,15 @@
 							<thead>
 								<tr>
 									<!-- <th>Id</th>-->									
-									<th>Gesti&oacute;n serial</th>
-									<th>Licencias y equipos</th>
-									<th>Serial</th>
-									<th>Empresa</th>																		
-									<th>Tipo</th>
-									<th>Pa&iacute;s</th>
-									<th>Dpto</th>
-									<th>Ciudad</th>																		
-									<th>Creado el</th>						
+									<th>Gesti&oacute;n Licencias</th>
+									<th>Nombre equipo</th>																								
 								</tr>
 							</thead>
 							<tbody>
-								<tr data-th-each="lead : ${leads}">									 							
+								<tr data-th-each="equipo : ${equipos}">									 							
 							   <!-- <td><a th:href="@{/lead/leadInfo(id=${lead.id})}" ><span th:text="${lead.empresa}" ></a></td> -->
-							        <td><a th:href="@{/serial/GestionarSerial(id=${lead.id})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Gestionar serial</a></td>
-							        <td><a th:href="@{/licencia/GestionarEquipos(id=${lead.id},serial=${seriales[lead.id]})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Gestionar licencias</a></td>
-							        <td th:text="${seriales[lead.id]}"></td>
-							        <td th:text="${lead.empresa}"></td>							        									
-									<td th:text="${lead.NombreTipoEmpresa}"></td>
-									<td th:text="${lead.countryName}"></td>									
-									<td th:text="${lead.stateName}"></td>
-									<td th:text="${lead.cityName}"></td>
-									<td th:text="${lead.fechaCreacion}"></td>									
+							        <td><a th:href="@{/licencia/GestionarLicencias(id=${lead.id})}" class="btn btn-primary btn-sm"><span class="fa fa-info-circle"> </span> Gestionar licencias</a></td>
+									<td th:text="${equipo.nequipo}"></td>									
 									<!-- <td>
 										<input hidden="hidden" name="id" th:value="${book.id}" />
 										<button th:id="'oneBook-'+${book.id}" class="btn btn-danger btn-xs delete-book" type="submit" value="delete" >
